@@ -3,6 +3,7 @@
 
 from fonctions import *
 from field import *
+from json import *
 
 
 if __name__ == '__main__':
@@ -17,7 +18,7 @@ if __name__ == '__main__':
 
         cpt = 0
 
-        while cpt < 1:
+        while state == True :
             
             field1 = convert_field_hex(fic[trame+40:trame+42])
             liste_field = []
@@ -29,7 +30,7 @@ if __name__ == '__main__':
                 ip = convert_to_ip(fic[trame+54:trame+58])
                 ip2 = convert_to_ip(fic[trame+58:trame+62])
                 b3 = convert_fields(fic[trame+16:trame+20])
-                b5 = convert_fields_by_bits(19,23,12,16,fic[trame+19:trame+23]) #marche pas là
+                b5 = convert_fields_by_bits(19,23,12,16,fic[trame+19:trame+23]) #bench5
 
                 liste_field.append(field1) #f1
                 liste_field.append(convert_fields(fic[trame+42:trame+44])) #field2
@@ -55,7 +56,9 @@ if __name__ == '__main__':
                 liste_field.append(convert_fields_by_bits(77,78,2,8,fic[trame+77:trame+78])) #field28 ###### 78o ok
                 liste_field.append(convert_fields_by_bits(78,80,0,6,fic[trame+78:trame+80])) #field29 # ok
                 liste_field.append(convert_fields_by_bits(78,80,6,16,fic[trame+78:trame+80])) #field30 # ok
-                liste_field.append(convert_fields(fic[trame+81:trame+82]))
+                liste_field.append(convert_fields(fic[trame+81:trame+82])) #field32 ok
+                liste_field.append(convert_fields(fic[trame+82:trame+86])) #field33/34 ok
+                liste_field.append(convert_fields(fic[trame+86:trame+88])) #field35 pas ok
                 
 
                 objectfield = Field(liste_field)
@@ -64,25 +67,25 @@ if __name__ == '__main__':
                 objectfield.affiche()
 
             elif field1 == '0806':
-                date = date_affiche(convert_to_float_double(fic[trame+8:trame+16]))
-                b3 = convert_to_dec(fic[trame+16:trame+20])
-                #b5
-                liste_field.append(field1)
-                mac = mac_address(convert_binary_hex(fic[trame+28:trame+34]))
-                mac2 = mac_address(convert_binary_hex(fic[trame+34:trame+40]))
-                liste_field.append(convert_fields(fic[trame+42:trame+44]))
-                liste_field.append(convert_fields(fic[trame+44:trame+46]))
-                liste_field.append(convert_fields(fic[trame+46:trame+47]))
-                liste_field.append(convert_fields(fic[trame+47:trame+48]))
+                date = date_affiche(convert_to_float_double(fic[trame+8:trame+16])) #frame date
+                b3 = convert_to_dec(fic[trame+16:trame+20]) #bench3
+                b5 = convert_fields_by_bits(19,23,12,16,fic[trame+19:trame+23]) #bench5
+                liste_field.append(field1) #field 1
+                mac = mac_address(convert_binary_hex(fic[trame+28:trame+34])) #addresse MAC Dest
+                mac2 = mac_address(convert_binary_hex(fic[trame+34:trame+40])) #addresse MAC Source
+                liste_field.append(convert_fields(fic[trame+42:trame+44])) #field2
+                liste_field.append(convert_fields(fic[trame+44:trame+46])) #field3
+                liste_field.append(convert_fields(fic[trame+46:trame+47])) #field4
+                liste_field.append(convert_fields(fic[trame+47:trame+48])) #field5
                 liste_field.append(convert_fields(fic[trame+48:trame+50])) #field6
-                mac_send = mac_address(convert_binary_hex(fic[trame+50:trame+56]))
-                ip_send = convert_to_ip(fic[trame+56:trame+60])
-                mac_target = mac_address(convert_binary_hex(fic[trame+60:trame+66]))
-                ip_target = convert_to_ip(fic[trame+66:trame+70])
+                mac_send = mac_address(convert_binary_hex(fic[trame+50:trame+56])) #addresse MAC Sender
+                ip_send = convert_to_ip(fic[trame+56:trame+60]) #addresse IP SENDER
+                mac_target = mac_address(convert_binary_hex(fic[trame+60:trame+66])) #addresse MAC TARGET
+                ip_target = convert_to_ip(fic[trame+66:trame+70]) #addresse IP TARGET
 
                 objectfield = Field(liste_field)
 
-                print("La date =",date,"Les adresses mac =", mac, mac2,"Les adresses IP =",ip,ip2,"Bench3 =",b3,mac_send,mac_target,ip_send,ip_target)
+                print("La date =",date,"Les adresses mac =", mac, mac2,"Les adresses IP =",ip,ip2,"Bench3 =",b3,"Bench 5 =",b5,mac_send,mac_target,ip_send,ip_target)
                 objectfield.affiche()
 
 

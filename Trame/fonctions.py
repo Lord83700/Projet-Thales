@@ -14,6 +14,7 @@ def convert_to_float_double(Doctets):
 
     return flotant
 
+
 def convert_to_ip(Doctets):
     lst = []
 
