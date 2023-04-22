@@ -3,7 +3,7 @@
 import struct
 import datetime
 from decimal import	Decimal
-from json_dic import *
+from dic import *
 
 
 def convert_binary_hex(DlstO) :
