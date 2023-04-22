@@ -3,6 +3,7 @@
 import struct
 import datetime
 from decimal import	Decimal
+from json_dic import *
 
 
 def convert_binary_hex(DlstO) :
@@ -73,6 +74,13 @@ def convert_field_hex(field):
     hex_field = field.hex()
     return hex_field
 
+def bin_optimise(n):
+    """Convertit un nombre en binaire"""
+    if n == 0: return '0'
+    res = ''
+    while n != 0: n, res = n >> 1, repr(n & 1) + res
+    return res
+
 def convert_fields_by_bits(octd,octf,bitd,bitf,binary):
     n = octf - octd
     dec = convert_fields(binary)
@@ -84,5 +92,42 @@ def convert_fields_by_bits(octd,octf,bitd,bitf,binary):
     return nombre
 
 
+def check_FT(nb,numFT):
+    #Si le numéro de la FT est égal à 1 alors on regarde dans le dictionnaire de FT1
+    if numFT == 1:
+        for cle,val in FT1.items():
+            if nb == val:
+                nb = cle
+    #Ainsi de suite
+    if numFT == 2:
+        for cle,val in FT2.items():
+            if nb == val:
+                nb = cle
+    
+    if numFT == 3:
+        for cle,val in FT3.items():
+            if nb == val:
+                nb = cle
 
+    if numFT == 4:
+        for cle,val in FT4.items():
+            if nb == val:
+                nb = cle
 
+    if numFT == 5:
+        for cle,val in FT5.items():
+            
+            if nb == val:
+                nb = cle
+
+    if numFT == 7:
+        for cle,val in FT7.items():
+            if nb == val:
+                nb = cle
+
+    if numFT == 0:
+        for cle,val in FT0.items():
+            if nb == val:
+                nb = cle
+
+    return nb
