@@ -48,7 +48,15 @@ def date_affiche(date):
 
     date_result = date_base + date_data
 
-    return(date_result.strftime("%A:%d:%b:%m:%Y:%H:%M:%S"))
+    return(date_result.strftime("%A:%d:%b:%m:%Y:%H:%M:%S.%f"))
+
+def PacketDate_affiche(date):
+    date_base = datetime.datetime(2000,1,1,12,0,0)
+    date_data = datetime.timedelta(seconds=date)
+
+    date_result = date_base + date_data
+
+    return(date_result.strftime("%A:%d:%b:%m:%Y:%H:%M:%S.%f"))
 
 def convert_to_dec(binary):
 

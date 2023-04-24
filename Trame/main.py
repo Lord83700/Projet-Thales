@@ -56,8 +56,8 @@ if __name__ == '__main__':
                 liste_field.append(check_FT(convert_fields_by_bits(78,80,0,6,fic[trame+78:trame+80]),4)) #field29 # ok 21
                 liste_field.append(convert_fields_by_bits(78,80,6,16,fic[trame+78:trame+80])) #field30 # ok 22
                 liste_field.append(check_FT(convert_fields(fic[trame+81:trame+82]),1)) #field32 ok 23
-                liste_field.append(convert_fields(fic[trame+82:trame+86])) #field33/34 ok
-                liste_field.append(convert_fields(fic[trame+86:trame+88])) #field35 pas ok
+                liste_field.append(convert_fields(fic[trame+82:trame+86])+((convert_fields(fic[trame+86:trame+88]))/2**16)) #field33/34 +35 ok
+                TimePacket = PacketDate_affiche(convert_fields(fic[trame+82:trame+86])+((convert_fields(fic[trame+86:trame+88]))/2**16)) 
                 
 
                 objectfield = Field(liste_field)
@@ -76,7 +76,7 @@ if __name__ == '__main__':
                 
 
             
-                print("La date =",date,"Les adresses mac =", mac, mac2,"Les adresses IP =",ip,ip2,"Bench 3 =",b3, "Bench 5 =",b5)
+                print("La date =",date,"Les adresses mac =", mac, mac2,"Les adresses IP =",ip,ip2,"Bench 3 =",b3, "Bench 5 =",b5,"Time Packet =", TimePacket)
                 objectfield.affiche()
 
             elif field1 == '0806':
