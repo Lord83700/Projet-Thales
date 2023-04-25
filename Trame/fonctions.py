@@ -142,5 +142,15 @@ def check_FT(nb,numFT):
         for cle,val in FT6.items():
             if nb == cle:
                 nb = str(nb) + "(" + val + ")"
+    
+    if numFT == "IP":
+        for cle,val in IP.items():
+            if nb == cle:
+                nb = str(nb) + "(" + val + ")"
+    
+    if numFT == "MAC":
+        for cle,val in MAC.items():
+            if nb == cle:
+                nb = str(nb) + "(" + val + ")"
 
     return nb

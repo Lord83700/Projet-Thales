@@ -24,10 +24,10 @@ if __name__ == '__main__':
 
             if field1 == '0800':
                 date = date_affiche(convert_to_float_double(fic[trame+8:trame+16]))
-                mac = mac_address(convert_binary_hex(fic[trame+28:trame+34]))
-                mac2 = mac_address(convert_binary_hex(fic[trame+34:trame+40]))
-                ip = convert_to_ip(fic[trame+54:trame+58])
-                ip2 = convert_to_ip(fic[trame+58:trame+62])
+                mac = check_FT(mac_address(convert_binary_hex(fic[trame+28:trame+34])),"MAC")
+                mac2 = check_FT(mac_address(convert_binary_hex(fic[trame+34:trame+40])),"MAC")
+                ip = check_FT(convert_to_ip(fic[trame+54:trame+58]),"IP")
+                ip2 = check_FT(convert_to_ip(fic[trame+58:trame+62]),"IP")
                 b3 = convert_fields(fic[trame+16:trame+20])
                 b5 = check_FT(convert_fields_by_bits(19,23,12,16,fic[trame+19:trame+23]),0) #bench5
 
@@ -84,19 +84,19 @@ if __name__ == '__main__':
             elif field1 == '0806':
                 date = date_affiche(convert_to_float_double(fic[trame+8:trame+16])) #frame date
                 b3 = convert_to_dec(fic[trame+16:trame+20]) #bench3
-                b5 = convert_fields_by_bits(19,23,12,16,fic[trame+19:trame+23]) #bench5
+                b5 = check_FT(convert_fields_by_bits(19,23,12,16,fic[trame+19:trame+23]),0) #bench5
                 liste_field.append(field1) #field 1
-                mac = mac_address(convert_binary_hex(fic[trame+28:trame+34])) #addresse MAC Dest
-                mac2 = mac_address(convert_binary_hex(fic[trame+34:trame+40])) #addresse MAC Source
+                mac = check_FT(mac_address(convert_binary_hex(fic[trame+28:trame+34])),"MAC") #addresse MAC Dest
+                mac2 = check_FT(mac_address(convert_binary_hex(fic[trame+34:trame+40])),"MAC") #addresse MAC Source
                 liste_field.append(convert_fields(fic[trame+42:trame+44])) #field2
                 liste_field.append(convert_fields(fic[trame+44:trame+46])) #field3
                 liste_field.append(convert_fields(fic[trame+46:trame+47])) #field4
                 liste_field.append(convert_fields(fic[trame+47:trame+48])) #field5
                 liste_field.append(convert_fields(fic[trame+48:trame+50])) #field6
-                mac_send = mac_address(convert_binary_hex(fic[trame+50:trame+56])) #addresse MAC Sender
-                ip_send = convert_to_ip(fic[trame+56:trame+60]) #addresse IP SENDER
-                mac_target = mac_address(convert_binary_hex(fic[trame+60:trame+66])) #addresse MAC TARGET
-                ip_target = convert_to_ip(fic[trame+66:trame+70]) #addresse IP TARGET
+                mac_send = check_FT(mac_address(convert_binary_hex(fic[trame+50:trame+56])),"MAC") #addresse MAC Sender
+                ip_send = check_FT(convert_to_ip(fic[trame+56:trame+60]),"IP") #addresse IP SENDER
+                mac_target = check_FT(mac_address(convert_binary_hex(fic[trame+60:trame+66])),"MAC") #addresse MAC TARGET
+                ip_target = check_FT(convert_to_ip(fic[trame+66:trame+70]),"IP") #addresse IP TARGET
 
                 objectfield = Field(liste_field)
 
