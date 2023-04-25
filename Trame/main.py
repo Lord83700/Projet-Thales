@@ -7,17 +7,17 @@ from field import *
 
 if __name__ == '__main__':
 
-    with open("./ethernet.result_data", 'rb') as bin:
+    with open("./ethernet.result_data", 'rb') as binary:
 
         trame = 0
         
-        fic = bin.read()
+        fic = binary.read()
 
         state = True
 
         cpt = 0
 
-        while state == True :
+        while state == True:
             
             field1 = convert_field_hex(fic[trame+40:trame+42])
             liste_field = []
@@ -61,21 +61,23 @@ if __name__ == '__main__':
                 
 
                 objectfield = Field(liste_field)
-                # field14 = bin_optimise(objectfield.lst_field[11])
-                # field18 = bin_optimise(objectfield.lst_field[14])
-                # field28 = bin_optimise(objectfield.lst_field[20])
-                # field29 = bin_optimise(objectfield.lst_field[21])
-                # field30 = bin_optimise(objectfield.lst_field[22])
+                field14 = str(bin(convert_fields_by_bits(70,72,3,4,fic[trame+70:trame+72])))[2:] #0 0
+                field18 = str(bin(convert_fields_by_bits(70,72,11,16,fic[trame+70:trame+72])))[2:] #0 00000 5
+                field18 = field18.zfill(5)
+                field28 = str(bin(convert_fields_by_bits(77,78,2,8,fic[trame+77:trame+78])))[2:] #3 000011 6
+                field28 = field28.zfill(6)
+                field29 = str(bin(convert_fields_by_bits(78,80,0,6,fic[trame+78:trame+80])))[2:] #15 001111 6
+                field29 = field29.zfill(6)
+                field30 = str(bin(objectfield.lst_field[21]))[2:] #5 101 10
+                field30 = field30.zfill(10)
 
-                # FT6 = field14 + field18 + field28 + field29 + field30
+                FT_6 = field14 + field18 + field28 + field29 + field30
 
-                # FT6 = int(FT6,10)
-                # FT6 = format(FT6, '016x')
-
-                # print(FT6)
+                FT_6 = int(FT_6,2)
+                FT_6 = hex(FT_6)
+                FT_6 = check_FT(FT_6,6)
+                objectfield.lst_field.append(FT_6)
                 
-
-            
                 print("La date =",date,"Les adresses mac =", mac, mac2,"Les adresses IP =",ip,ip2,"Bench 3 =",b3, "Bench 5 =",b5,"Time Packet =", TimePacket)
                 objectfield.affiche()
 

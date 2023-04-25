@@ -105,37 +105,42 @@ def check_FT(nb,numFT):
     if numFT == 1:
         for cle,val in FT1.items():
             if nb == val:
-                nb = cle
+                nb = str(nb) + "(" + cle + ")"
     #Ainsi de suite
     if numFT == 2:
         for cle,val in FT2.items():
             if nb == val:
-                nb = cle
+                nb = str(nb) + "(" + cle + ")"
     
     if numFT == 3:
         for cle,val in FT3.items():
             if nb == val:
-                nb = cle
+                nb = str(nb) + "(" + cle + ")"
 
     if numFT == 4:
         for cle,val in FT4.items():
             if nb == val:
-                nb = cle
+                nb = str(nb) + "(" + cle + ")"
 
     if numFT == 5:
         for cle,val in FT5.items():
             
             if nb == val:
-                nb = cle
+                nb = str(nb) + "(" + cle + ")"
 
     if numFT == 7:
         for cle,val in FT7.items():
             if nb == val:
-                nb = cle
+                nb = str(nb) + "(" + cle + ")"
 
     if numFT == 0:
         for cle,val in FT0.items():
             if nb == val:
-                nb = cle
+                nb = str(nb) + "(" + cle + ")"
+
+    if numFT == 6:
+        for cle,val in FT6.items():
+            if nb == cle:
+                nb = str(nb) + "(" + val + ")"
 
     return nb
