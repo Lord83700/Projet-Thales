@@ -6,96 +6,81 @@ from decimal import	Decimal
 from dic import *
 
 
-def convert_binary_hex(DlstO) :
-    hexa = DlstO.hex()
+def convert_binary_hex(DlstO) : #fonction pour convertir binaire en héxa
+    hexa = DlstO.hex() #appel de la fonction héxa
     return hexa
 
-def convert_to_float_double(Doctets):
-    flotant = struct.unpack('>d', Doctets)[0]
+def convert_to_float_double(Doctets): #fonction pour convertir le binaire en double
+    flotant = struct.unpack('>d', Doctets)[0] #appel de la fonction struct.unpack pour convertir le binaire en double
 
     return flotant
 
 
-def convert_to_ip(Doctets):
-    lst = []
+def convert_to_ip(Doctets): #focntion pour obtenir l'adresse IP
+    lst = [] #crée une liste vide
 
-    for i in range(0,4,1):
+    for i in range(0,4,1): #sépare chaque octets
         lst.append(Doctets[i:i+1])
 
-    lst_int = []
-    for i in lst:
-        integer = int.from_bytes(i, byteorder="big",signed=False)
-        str_int = str(integer)
-        lst_int.append(str_int)
+    lst_int = [] #crée une nouvelle liste vide ou l'on va stocker chaque nombre
+    for i in lst: #pour chaque octets on le décode puis l'ajoute à lst_int
+        integer = int.from_bytes(i, byteorder="big",signed=False) #fonction pour décoder le binaire en entier
+        str_int = str(integer) #convertir en string pour le concatener
+        lst_int.append(str_int) #ajoute à lst_int
 
-    ip = ".".join(lst_int)
+    ip = ".".join(lst_int) #on concatène tout les nombres ensembles avec un "." pour crée l'adresse ip
         
     return ip   
 
-def mac_address(mac):
+def mac_address(mac): #fonction pour concaténer l'adresse MAC
     
-    str_mac = str(mac)
-    result = ''
+    str_mac = str(mac) #converti l'adresse MAC en string
+    result = '' #crée une chaine vide
 
-    for i in range(0,len(str_mac),2):
+    for i in range(0,len(str_mac),2): #tout les 2 octets on ajoute à resulte les 2 octets + ":"
         result += str_mac[i:i+2] + ":"
 
-    return (result.strip(":"))
+    return (result.strip(":")) #retourne le résultat en enlevant ":" à la fin
 
-def date_affiche(date):
-    date_base = datetime.datetime(1970,1,1,0,0,0)
-    date_data = datetime.timedelta(seconds=date)
+def date_affiche(date): #fonction pour afficher la date 
+    date_base = datetime.datetime(1970,1,1,0,0,0) # crée une variable pour stocker la date à partir de la date du début
+    date_data = datetime.timedelta(seconds=date) # crée une variable pour stocker la date à ajouter
 
-    date_result = date_base + date_data
+    date_result = date_base + date_data #ajoute les 2 dates ensembles
 
-    return(date_result.strftime("%A:%d:%b:%m:%Y:%H:%M:%S.%f"))
+    return(date_result.strftime("%A:%d:%b:%m:%Y:%H:%M:%S.%f")) #retourne la date avec l'affiche adéquat
 
-def PacketDate_affiche(date):
-    date_base = datetime.datetime(2000,1,1,12,0,0)
-    date_data = datetime.timedelta(seconds=date)
+def PacketDate_affiche(date): # fonction pour afficher le PacketDate
+    date_base = datetime.datetime(2000,1,1,12,0,0) # crée une variable pour stocker la date à partir de la date du début
+    date_data = datetime.timedelta(seconds=date) # crée une variable pour stocker la date à ajouter
 
-    date_result = date_base + date_data
+    date_result = date_base + date_data # ajoute les 2 dates ensembles
 
-    return(date_result.strftime("%A:%d:%b:%m:%Y:%H:%M:%S.%f"))
+    return(date_result.strftime("%A:%d:%b:%m:%Y:%H:%M:%S.%f")) ## retourne la date avec l'affiche adéquat
 
-def convert_to_dec(binary):
+def convert_to_dec(binary): #fonction pour convertir le binaire en décimal
 
-    int_size = struct.unpack('>i', binary)[0]
+    int_size = struct.unpack('>i', binary)[0] #convertit grâce à struct le binaire en entier
 
     return int_size
 
-def convert_fields(field):
-    int_field = int.from_bytes(field,byteorder='big',signed=False)
+def convert_fields(field): #fonction pour convertir le binaire en décimal, mais pour les fiels car struct ne prend pas en entrée par exemple 5 bits
+    int_field = int.from_bytes(field,byteorder='big',signed=False) # cette fois-ci on utilise int.from-bytes pour décoder
     return int_field
 
-# def convert_fields_by_bits(binaire,debut,fin):
-#     if not isinstance(binaire, bytes) or len(binaire) != 2:
-#         raise ValueError("L'entrée doit être un nombre binaire de 2 octets sous la forme b'\\x00\\xb8'")
 
-#     liste_bits = [int(bit) for octet in binaire for bit in format(octet, '08b')]
-
-#     bit_convertie = int.from_bytes(liste_bits[debut:fin],byteorder='big',signed=False)
-
-#     return bit_convertie
-
-def convert_field_hex(field):
-    hex_field = field.hex()
+def convert_field_hex(field): # fonction pour convertir le binaire en héxadécimal
+    hex_field = field.hex() # converti le binaire en hex
     return hex_field
 
-def bin_optimise(n):
-    """Convertit un nombre en binaire"""
-    if n == 0: return '0'
-    res = ''
-    while n != 0: n, res = n >> 1, repr(n & 1) + res
-    return res
 
-def convert_fields_by_bits(octd,octf,bitd,bitf,binary):
-    n = octf - octd
-    dec = convert_fields(binary)
-    dec_bin = str(bin(dec))[2:]
-    dec_bin = dec_bin.zfill(n*8)
-    bit = dec_bin[bitd:bitf]
-    nombre = int(bit,2)
+def convert_fields_by_bits(octd,octf,bitd,bitf,binary): #fonction pour convertir un bit en décimal
+    n = octf - octd # calcule le nombre d'octets
+    dec = convert_fields(binary) #converti le binaire en décimal
+    dec_bin = str(bin(dec))[2:] #converti en binaire en forme de 000000000
+    dec_bin = dec_bin.zfill(n*8) #remplie pour qu'il y ait le nombre adéquat de bits
+    bit = dec_bin[bitd:bitf] # prend le bit adéquat
+    nombre = int(bit,2) # converti le bit en décimal
 
     return nombre
 
