@@ -12,7 +12,7 @@ if __name__ == '__main__':
                                         user='root',
                                         password='adminthales')
 
-    with open("C:/Users/alexa/OneDrive/Bureau/THALES/Projet-Thales-main/Trame/ethernet.result_data", 'rb') as binary: #On ouvre le fichier binaire
+    with open("./ethernet.result_data", 'rb') as binary: #On ouvre le fichier binaire
 
         trame = 0 #set la variable trame à 0
         
@@ -82,6 +82,7 @@ if __name__ == '__main__':
                 FT_6 = check_FT(FT_6,6) #regarde ça FT
                 objectfield.lst_field.append(FT_6) #l'ajoute à la liste de field
                 
+
             elif field1 == '0806':
                 date = date_affiche(convert_to_float_double(fic[trame+8:trame+16])) #frame date
                 b3 = convert_to_dec(fic[trame+16:trame+20]) #bench3
