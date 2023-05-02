@@ -12,7 +12,7 @@ if __name__ == '__main__':
                                         user='root',
                                         password='adminthales')
 
-    with open("./ethernet.result_data", 'rb') as binary: #On ouvre le fichier binaire
+    with open("C:/Users/alexa/OneDrive/Bureau/THALES/Projet-Thales-main/Trame/ethernet.result_data", 'rb') as binary: #On ouvre le fichier binaire
 
         trame = 0 #set la variable trame à 0
         
@@ -82,9 +82,6 @@ if __name__ == '__main__':
                 FT_6 = check_FT(FT_6,6) #regarde ça FT
                 objectfield.lst_field.append(FT_6) #l'ajoute à la liste de field
                 
-                print("La date =",date,"Les adresses mac =", mac, mac2,"Les adresses IP =",ip,ip2,"Bench 3 =",b3, "Bench 5 =",b5,"Time Packet =", TimePacket) #affiche le resultat
-                objectfield.affiche() #utilise la fonction affiche de notre classe
-
             elif field1 == '0806':
                 date = date_affiche(convert_to_float_double(fic[trame+8:trame+16])) #frame date
                 b3 = convert_to_dec(fic[trame+16:trame+20]) #bench3
@@ -103,11 +100,6 @@ if __name__ == '__main__':
                 ip_target = check_FT(convert_to_ip(fic[trame+66:trame+70]),"IP") #addresse IP TARGET
 
                 objectfield = Field(liste_field)
-
-                print("La date =",date,"Les adresses mac =", mac, mac2,"Les adresses IP =",ip,ip2,"Bench3 =",b3,"Bench 5 =",b5,mac_send,mac_target,ip_send,ip_target)
-                objectfield.affiche()
-
-
             
             try: #essaie ça si il n'y a pas d'erreur
                 taille = fic[trame+24:trame+28]
