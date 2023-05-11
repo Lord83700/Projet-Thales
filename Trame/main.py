@@ -21,6 +21,7 @@ if __name__ == '__main__':
         state = True #définit un état en true
 
         cpt = 0 #on définit un compteur égal à 0
+        curseur = connection.cursor()
 
         while state == True: #tant que l'état est égal à TRUE alors 
             
@@ -81,6 +82,16 @@ if __name__ == '__main__':
                 FT_6 = hex(FT_6) #decode en hexadécimal
                 FT_6 = check_FT(FT_6,6) #regarde ça FT
                 objectfield.lst_field.append(FT_6) #l'ajoute à la liste de field
+
+                mySql_insert_query = """INSERT INTO trame (date, pmid, bench3, bench5, macdst, macsrc, field1, field2, field3, field4, field5, field6, field7, ipsrc,
+                    ipdst, field9, field10, field11, field14, field16, field17, field18, field20, field21, field23, field25, field26, field28, field29, field30, field32, field333435,
+                    timepacket) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
+                record = (date, FT_6, b3, b5, mac, mac2, field1, objectfield.lst_field[1], objectfield.lst_field[2],objectfield.lst_field[3],objectfield.lst_field[4],
+                    objectfield.lst_field[5],objectfield.lst_field[6],ip, ip2, objectfield.lst_field[7],objectfield.lst_field[8],objectfield.lst_field[9],objectfield.lst_field[10],
+                    objectfield.lst_field[11],objectfield.lst_field[12],objectfield.lst_field[13],objectfield.lst_field[14],objectfield.lst_field[15],objectfield.lst_field[16],
+                    objectfield.lst_field[17],objectfield.lst_field[18],objectfield.lst_field[19],objectfield.lst_field[20],objectfield.lst_field[21],objectfield.lst_field[22],objectfield.lst_field[23],TimePacket,)
+                curseur.execute(mySql_insert_query, record)
                 
 
             elif field1 == '0806':
@@ -101,37 +112,18 @@ if __name__ == '__main__':
                 ip_target = check_FT(convert_to_ip(fic[trame+66:trame+70]),"IP") #addresse IP TARGET
 
                 objectfield = Field(liste_field)
-            
+                
+                mySql_insert_query = """INSERT INTO trame (date, bench3, bench5, macdst, macsrc, field1, field2bis, field3bis, field4bis, field5bis, field6bis,
+                    macsender, ipsender, mactarget, iptarget) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
+                record = (date, b3, b5, mac, mac2, field1, objectfield.lst_field[1], objectfield.lst_field[2], objectfield.lst_field[3], objectfield.lst_field[4], objectfield.lst_field[5],
+                    mac_send, ip_send, mac_target, ip_target,)
+                curseur.execute(mySql_insert_query, record)
+
             try: #essaie ça si il n'y a pas d'erreur
                 taille = fic[trame+24:trame+28]
                 taille = convert_to_dec(taille)
                 trame = trame + taille + 28
-                curseur = connection.cursor()
-                if field1 == '0800': #si le field est égal à 0800 alors
-                    
-                    mySql_insert_query = """INSERT INTO trame (date, pmid, bench3, bench5, framesize, macdst, macsrc, field1, field2, field3, field4, field5, field6, field7, ipsrc,
-                    ipdst, field9, field10, field11, field14, field16, field17, field18, field20, field21, field23, field25, field26, field28, field29, field30, field32, field333435,
-                    timepacket) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
-                    record = (date, FT_6, b3, b5, taille, mac, mac2, field1, convert_fields(fic[trame+42:trame+44]), convert_fields(fic[trame+44:trame+46]), convert_fields(fic[trame+46:trame+48]), convert_fields(fic[trame+48:trame+50]),
-                          convert_fields(fic[trame+50:trame+51]), convert_fields(fic[trame+51:trame+52]), ip, ip2, convert_fields(fic[trame+62:trame+64]), convert_fields(fic[trame+64:trame+66]),
-                          convert_fields(fic[trame+66:trame+68]), check_FT(convert_fields_by_bits(70,72,3,4,fic[trame+70:trame+72]),7), convert_fields_by_bits(70,72,5,8,fic[trame+70:trame+72]),
-                          check_FT(convert_fields_by_bits(70,72,8,11,fic[trame+70:trame+72]),5), check_FT(convert_fields_by_bits(70,72,11,16,fic[trame+70:trame+72]),2),
-                          convert_fields_by_bits(72,74,2,16,fic[trame+72:trame+74]), convert_fields(fic[trame+74:trame+76]), convert_fields_by_bits(76,77,4,5,fic[trame+76:trame+77]),
-                          convert_fields_by_bits(76,77,6,7,fic[trame+76:trame+77]), convert_fields_by_bits(76,77,7,8,fic[trame+76:trame+77]), check_FT(convert_fields_by_bits(77,78,2,8,fic[trame+77:trame+78]),3),
-                          check_FT(convert_fields_by_bits(78,80,0,6,fic[trame+78:trame+80]),4), convert_fields_by_bits(78,80,6,16,fic[trame+78:trame+80]), check_FT(convert_fields(fic[trame+81:trame+82]),1),
-                          convert_fields(fic[trame+82:trame+86])+((convert_fields(fic[trame+86:trame+88]))/2**16), TimePacket,)
-                    curseur.execute(mySql_insert_query, record)
-                
-                elif field1 == '0806':
-                    
-                    mySql_insert_query = """INSERT INTO trame (date, bench3, bench5, framesize, macdst, macsrc, field1, field2bis, field3bis, field4bis, field5bis, field6bis,
-                    macsender, ipsender, mactarget, iptarget) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """
-                    record = (date, b3, b5, taille, mac, mac2, field1, convert_fields(fic[trame+42:trame+44]), convert_fields(fic[trame+44:trame+46]), convert_fields(fic[trame+46:trame+47]),
-                              convert_fields(fic[trame+47:trame+48]), convert_fields(fic[trame+48:trame+50]), mac_send, ip_send, mac_target, ip_target,)
-                    curseur.execute(mySql_insert_query, record)
-                
             except struct.error: #si il y a une erreur du type struct.error alors on marque fin du fichier et on passe state à false
                 print("Fin du fichier")
                 state = False
