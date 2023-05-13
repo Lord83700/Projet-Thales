@@ -3,7 +3,7 @@
 import struct
 import datetime
 from decimal import	Decimal
-from dic import *
+from FT import *
 
 
 def convert_binary_hex(DlstO) : #fonction pour convertir binaire en héxa
@@ -89,38 +89,38 @@ def check_FT(nb,numFT):
     #Si le numéro de la FT est égal à 1 alors on regarde dans le dictionnaire de FT1
     if numFT == 1:
         for cle,val in FT1.items():
-            if nb == val:
+            if nb == cle:
                 nb = str(nb) + "(" + cle + ")"
     #Ainsi de suite
     if numFT == 2:
         for cle,val in FT2.items():
-            if nb == val:
+            if nb == cle:
                 nb = str(nb) + "(" + cle + ")"
     
     if numFT == 3:
         for cle,val in FT3.items():
-            if nb == val:
+            if nb == cle:
                 nb = str(nb) + "(" + cle + ")"
 
     if numFT == 4:
         for cle,val in FT4.items():
-            if nb == val:
+            if nb == cle:
                 nb = str(nb) + "(" + cle + ")"
 
     if numFT == 5:
         for cle,val in FT5.items():
             
-            if nb == val:
+            if nb == cle:
                 nb = str(nb) + "(" + cle + ")"
 
     if numFT == 7:
         for cle,val in FT7.items():
-            if nb == val:
+            if nb == cle:
                 nb = str(nb) + "(" + cle + ")"
 
     if numFT == 0:
         for cle,val in FT0.items():
-            if nb == val:
+            if nb == cle:
                 nb = str(nb) + "(" + cle + ")"
 
     if numFT == 6:
@@ -139,3 +139,25 @@ def check_FT(nb,numFT):
                 nb = str(nb) + "(" + val + ")"
 
     return nb
+
+
+
+def fichier(nfic): #prend le nom du fichier en entré
+    with open(nfic, "rb") as fic:    #on ouvre le fichier en binaire
+        liste_fic = []
+        lines = fic.readlines() #lit chaque ligne 
+        liste_fic.append(lines)
+        obsw1 = lines[7].decode().rstrip().split(": ")[1]
+        obsw2 = lines[8].decode().rstrip().split(": ")[1]
+        obsw = obsw1 + " " +obsw2 #concataine les 2 valeurs de obsw
+        liste_fic.append(obsw)
+        bds = lines[9].decode().rstrip().split(": ")[1]
+        liste_fic.append(bds)
+        tv = lines[10].decode().rstrip().split(": ")[1]
+        liste_fic.append(tv)
+        dt = lines[14].decode().rstrip().replace('"', '').split(": ")[1] #enleve les guillemets pour gérer les pb en csv
+        liste_fic.append(dt)
+        nom = lines[27].decode().rstrip().split(": ")[1]
+        liste_fic.append(nom)
+    
+    return liste_fic

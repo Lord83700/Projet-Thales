@@ -11,8 +11,11 @@ if __name__ == '__main__':
                                         database='thales',
                                         user='root',
                                         password='adminthales')
+    
+    nfic = input("Veuillez entrer le nom du fichier à décoder (avec l'extension)")
+    nrep = input("Veuillez entrer le nom du fichier rep (avec l'extension)")
 
-    with open("./ethernet.result_data", 'rb') as binary: #On ouvre le fichier binaire
+    with open(str(nfic), 'rb') as binary: #On ouvre le fichier binaire
 
         trame = 0 #set la variable trame à 0
         
@@ -119,6 +122,8 @@ if __name__ == '__main__':
                 record = (date, b3, b5, mac, mac2, field1, objectfield.lst_field[1], objectfield.lst_field[2], objectfield.lst_field[3], objectfield.lst_field[4], objectfield.lst_field[5],
                     mac_send, ip_send, mac_target, ip_target,)
                 curseur.execute(mySql_insert_query, record)
+
+            rep = fichier(str(nrep))
 
             try: #essaie ça si il n'y a pas d'erreur
                 taille = fic[trame+24:trame+28]
