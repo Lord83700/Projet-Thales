@@ -90,60 +90,59 @@ def check_FT(nb,numFT):
     if numFT == 1:
         for cle,val in FT1.items():
             if nb == cle:
-                nb = str(nb) + "(" + cle + ")"
+                nb = str(cle) + "(" + str(val) + ")"
     #Ainsi de suite
     if numFT == 2:
         for cle,val in FT2.items():
             if nb == cle:
-                nb = str(nb) + "(" + cle + ")"
+                nb = str(cle) + "(" + str(val) + ")"
     
     if numFT == 3:
         for cle,val in FT3.items():
             if nb == cle:
-                nb = str(nb) + "(" + cle + ")"
+                nb = str(cle) + "(" + str(val) + ")"
 
     if numFT == 4:
         for cle,val in FT4.items():
             if nb == cle:
-                nb = str(nb) + "(" + cle + ")"
+                nb = str(cle) + "(" + str(val) + ")"
 
     if numFT == 5:
         for cle,val in FT5.items():
-            
             if nb == cle:
-                nb = str(nb) + "(" + cle + ")"
+                nb = str(cle) + "(" + str(val) + ")"
 
     if numFT == 7:
         for cle,val in FT7.items():
             if nb == cle:
-                nb = str(nb) + "(" + cle + ")"
+                nb = str(cle) + "(" + str(val) + ")"
 
     if numFT == 0:
         for cle,val in FT0.items():
             if nb == cle:
-                nb = str(nb) + "(" + cle + ")"
+                nb = str(cle) + "(" + str(val) + ")"
 
     if numFT == 6:
         for cle,val in FT6.items():
             if nb == cle:
-                nb = str(nb) + "(" + val + ")"
+                nb = str(cle) + "(" + str(val) + ")"
     
     if numFT == "IP":
         for cle,val in IP.items():
             if nb == cle:
-                nb = str(nb) + "(" + val + ")"
+                nb = str(cle) + "(" + str(val) + ")"
     
     if numFT == "MAC":
         for cle,val in MAC.items():
             if nb == cle:
-                nb = str(nb) + "(" + val + ")"
+                nb = str(cle) + "(" + str(val) + ")"
 
     return nb
 
 
 
-def fichier(nfic): #prend le nom du fichier en entré
-    with open(nfic, "rb") as fic:    #on ouvre le fichier en binaire
+def fichier(nfic): #prend le nom du fichier en entrée
+    with open(nfic, "rb") as fic: #on ouvre le fichier en binaire
         liste_fic = []
         lines = fic.readlines() #lit chaque ligne 
         liste_fic.append(lines)
