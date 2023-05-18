@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import argparse, sys
 import mysql.connector
 from fonctions import *
 from field import *
@@ -7,31 +8,50 @@ from field import *
 
 if __name__ == '__main__': 
 
-    nfic = input("Veuillez entrer le nom du fichier à décoder (avec l'extension)\n")
-    nrep = input("Veuillez entrer le nom du fichier rep (avec l'extension)\n")
+    argParser = argparse.ArgumentParser() # Crée les arguments autorisés à utiliser pour l'exécution du programme
+    
+    argParser.add_argument("-b", "--brut", type=str, help="Fichier brut de test (avec extension)") # Argument -b pour le fichier binaire
+    argParser.add_argument("-r", "--rep", type=str, help="Fichier rep de test (avec extension)") # Argument -r pour le fichier rep
+    args = argParser.parse_args(args=None if sys.argv[1:] else ['--help']) # Si aucun argument tapé, renvoie l'aide de l'option -h
+    
+    args= argParser.parse_args() # Place les valeurs des arguments dans la variable args
 
-    connection = mysql.connector.connect(host='localhost',
+    connection = mysql.connector.connect(host='localhost', # Initie la connexion à la base de données
                                         database='thales',
                                         user='root',
                                         password='adminthales')
         
-    rep = fichier(str(nrep))
+    rep = fichier(args.rep) # Fonction récupérant les informations utiles du fichier rep
 
-    obsw = rep[1]
+    obsw = rep[1] # Informations du fichier rep placés dans des variables
     bds = rep[2]
     tv = rep[3]
     dt = rep[4]
     nt = rep[5]
 
-    curseur = connection.cursor()
+    curseur = connection.cursor() # Création d'un curseur afin d'initier des requêtes SQL auprès de la base
+    
+    mySql_select_query = """SELECT dt FROM fic""" # Création de la requête pour récupèrer les dates d'exécution de tous les fichiers déjà insérés dans la base
+    
+    curseur.execute(mySql_select_query) # Exécute cette requête
+    
+    res = curseur.fetchall() # Place dans une variable toutes les informations récupérer depuis la base
+    
+    for i in res: # Pour chaque date de fichier dans la base, la compare à la date du fichier rep afin de ne pas l'envoyé si elles coïncident
+        i =  "('%s',)" % i
+        if i == f"('{dt}',)":
+            sys.exit("Ce fichier et ses données ont déjà été insérées dans la base\nEn effet, la date du fichier choisi pour l'exécution du programme correspond déjà à la date d'un fichier dans la base")
+            
+    mySql_insert_query = """INSERT INTO fic (nomfic, obsw, bds, tv, dt)
+                                VALUES (%s, %s, %s, %s, %s) """ # Création de la requête pour envoyer les informations du fichier rep dans la base
+                                
+    record = (nt, obsw, bds, tv, dt,) # Création d'une variable contenant les informations à envoyer
+    
+    curseur.execute(mySql_insert_query, record) # Exécute cette requête
+    
+    numfic = curseur.lastrowid # Récupère le dernier id incrémenté par l'envoi du fichier rep dans la base
 
-    mySql_insert_query = """INSERT INTO fic (nomfic, obsw, bds, tv, dt) 
-                                VALUES (%s, %s, %s, %s, %s) """
-    record = (nt, obsw, bds, tv, dt,)
-    curseur.execute(mySql_insert_query, record)
-    numfic = curseur.lastrowid
-
-    with open(str(nfic), 'rb') as binary: #On ouvre le fichier binaire
+    with open(args.brut, 'rb') as binary: #On ouvre le fichier binaire
 
         trame = 0 #set la variable trame à 0
         
@@ -154,15 +174,4 @@ if __name__ == '__main__':
 
         print(cpt)#affiche le nombre de ligne lue
 
-        print(nfic)
-
-        print(obsw, bds, tv, dt, nt)
-
         connection.commit()
-
-        
-            
-            
-        
-
-
