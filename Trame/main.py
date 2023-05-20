@@ -40,7 +40,7 @@ if __name__ == '__main__':
     for i in res: # Pour chaque date de fichier dans la base, la compare à la date du fichier rep afin de ne pas l'envoyé si elles coïncident
         i =  "('%s',)" % i
         if i == f"('{dt}',)":
-            sys.exit("Ce fichier et ses données ont déjà été insérées dans la base\nEn effet, la date du fichier choisi pour l'exécution du programme correspond déjà à la date d'un fichier dans la base")
+            sys.exit("Ce fichier et ses données ont déjà été insérées dans la base\nErreur : Date de fichier rep correspond à une date de fichier dans la base")
             
     mySql_insert_query = """INSERT INTO fic (nomfic, obsw, bds, tv, dt)
                                 VALUES (%s, %s, %s, %s, %s) """ # Création de la requête pour envoyer les informations du fichier rep dans la base
@@ -139,7 +139,7 @@ if __name__ == '__main__':
                 mac_target = check_FT(mac_address(convert_binary_hex(fic[trame+60:trame+66])),"MAC") #addresse MAC TARGET
                 ip_target = check_FT(convert_to_ip(fic[trame+66:trame+70]),"IP") #addresse IP TARGET
 
-                objectfield = Field(liste_field)
+                objectfield = Field(liste_field) # Création d'un objet avec le constructeur Field pour ranger toutes les informations des trames
 
             try: #essaie ça si il n'y a pas d'erreur
                 taille = fic[trame+24:trame+28]
