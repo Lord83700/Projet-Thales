@@ -83,8 +83,10 @@ session_start();
                                                         <td>
                                                         <form action="affiche.php" method="GET">
                                                             <div class="input-group mb-3">
-                                                                <button type="submit" class="btn btn-primary button" name="numfic" value="<?php if(isset($_GET['numfic'])){echo $_GET['numfic']; } ?>">Voir fichier</button>
+                                                                <input type="hidden" name="page" value="1">
+                                                                <button type="submit" class="btn btn-primary button" name="numfic" value="<?php if(isset($items['numfic'])){echo $items['numfic']; } ?>">Voir fichier</button>
                                                             </div>
+                                                        </form>
                                                         </td>
                                                     </tr>
                                                     <?php

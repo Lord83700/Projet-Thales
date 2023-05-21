@@ -1,5 +1,13 @@
 <?php
 session_start();
+if (empty($_SESSION['page'])){
+    $_SESSION['page']=1;
+}
+if (isset($_GET["page"])) { 
+    $page  = $_GET["page"];
+} else { 
+    $page=1; 
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,10 +20,15 @@ session_start();
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+
         <header>
             <p>TEST</p>
         </header>
-
+        <?php
+        $totalrec = "500";
+        $debut = $page - 1;
+        $debut = $debut * $totalrec;
+        ?>
         <nav>
             <a href='oui'>Accueil</a>
             <a href='oui'>Crédit</a>
@@ -52,23 +65,31 @@ session_start();
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>Numéro de la trame</th>
+                                        <th>Type de trame</th>
                                         <th>ID du fichier</th>
-                                        <th>Nom du fichier</th>
-                                        <th>Date du fichier</th>
+                                        <th>Date de la trame</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
                                         include ("base.php");
 
-                                        if(isset($_GET['search']))
+                                        if(isset($_GET['numfic']))
                                         {
-                                            $filtre = $_GET['search'];
-                                            $query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,dt) LIKE '%$filtre%' ";
+                                            $query = "SELECT field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic";
                                             $req = $bd->prepare($query);
+                                            $req->bindValue(':numfic', $_GET['numfic']);
                                             $req->execute();
-                                            $res = $req->fetchall();
                                             $count = $req->rowCount();
+                                            $req->closeCursor();
+                                            $filtre = $_GET['numfic'];
+                                            $query = "SELECT numtrame,field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT numtrame,field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic ORDER BY date LIMIT $debut,$totalrec";
+                                            $req = $bd->prepare($query);
+                                            $req->bindValue(':numfic', $_GET['numfic']);
+                                            $req->execute();
+                                            $totalpage = $count / $totalrec;
+                                            $res = $req->fetchall();
                                             $req->closeCursor();
 
                                             if($count > 0)
@@ -77,13 +98,16 @@ session_start();
                                                 {
                                                     ?>
                                                     <tr>
+                                                        <td><?= $items['numtrame']; ?></td>
+                                                        <td>0x<?= $items['field1'];
+                                                            if ($items['field1'] == 800){
+                                                                echo "&nbsp(UDP)";}
+                                                            elseif ($items['field1'] == 806){
+                                                                echo "&nbsp(ARP)";
+                                                            }
+                                                            ?></td>
                                                         <td><?= $items['numfic']; ?></td>
-                                                        <td><?= $items['nomfic']; ?></td>
-                                                        <td><?= $items['dt']; ?>
-                                                            <div class="buttons-container">
-                                                                <button class="button-arounder">Voir fichier</button>
-                                                            </div>
-                                                        </td>
+                                                        <td><?= $items['date']; ?></td>
                                                     </tr>
                                                     <?php
                                                 }
@@ -100,13 +124,33 @@ session_start();
                                     ?>
                                 </tbody>
                             </table>
+                            <?php
+                            if ($totalpage > 1) {
+                                $previous = $page - 1;
+                                $next = $page + 1;
+                
+                                echo '<div class="pagination">';
+                                if ($page > 1) {
+                                    echo '<a href="?page=' . $previous . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Previous</a>';
+                                }
+                
+                                for ($i = 1; $i <= $totalpage; $i++) {
+                                    echo '<a href="?page=' . $i . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">' . $i . '</a>';
+                                }
+                
+                                if ($page < $totalpage) {
+                                    echo '<a href="?page=' . $next . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Next</a>';
+                                }
+                                echo '</div>';
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <footer>
-        <p>Ce site a été écrit en HTML 5 et CSS 3 par Nom Prénom. Il est validé par le W3C. logos HTML5 et CSS3</p>
+            <p>Ce site a été écrit en HTML 5 et CSS 3 par Nom Prénom. Il est validé par le W3C. logos HTML5 et CSS3</p>
         </footer>
     </body>
 </html>
