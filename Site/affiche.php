@@ -101,13 +101,24 @@ if (isset($_GET["page"])) {
                                                         <td><?= $items['numtrame']; ?></td>
                                                         <td>0x<?= $items['field1'];
                                                             if ($items['field1'] == 800){
-                                                                echo "&nbsp(UDP)";}
+                                                                echo "&nbsp(UDP)";
+                                                                $typetrame = "trame800";
+                                                            }
                                                             elseif ($items['field1'] == 806){
                                                                 echo "&nbsp(ARP)";
+                                                                $typetrame = "trame806";
                                                             }
                                                             ?></td>
                                                         <td><?= $items['numfic']; ?></td>
                                                         <td><?= $items['date']; ?></td>
+                                                        <td>
+                                                        <form action="trame.php" method="GET">
+                                                            <div class="input-group mb-3">
+                                                                <input type="hidden" name="typetrame" value=<?php echo $typetrame; ?>>
+                                                                <button type="submit" class="btn btn-primary button" name="numtrame" value="<?php if(isset($items['numtrame'])){echo $items['numtrame']; } ?>">Voir trame</button>
+                                                            </div>
+                                                        </form>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 }
@@ -150,7 +161,6 @@ if (isset($_GET["page"])) {
             </div>
         </div>
         <footer>
-            <p>Ce site a été écrit en HTML 5 et CSS 3 par Nom Prénom. Il est validé par le W3C. logos HTML5 et CSS3</p>
         </footer>
     </body>
 </html>

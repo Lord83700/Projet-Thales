@@ -110,7 +110,6 @@ session_start();
             </div>
         </div>
         <footer>
-        <p>Ce site a été écrit en HTML 5 et CSS 3 par Nom Prénom. Il est validé par le W3C. logos HTML5 et CSS3</p>
         </footer>
     </body>
 </html>
