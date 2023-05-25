@@ -27,3 +27,14 @@
     font-weight: bold;
     text-decoration: underline;
 }
+
+.button-danger {
+    background-color: #a71515;
+    color: white;
+    
+}
+
+.button-danger:hover {
+    background-color: #790f0f;
+    color: white;
+}

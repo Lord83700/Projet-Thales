@@ -1,5 +1,10 @@
 <?php
 session_start();
+if(isset($_SESSION['supprok']))
+{
+    $message = $_SESSION['supprok'];
+    unset($_SESSION['supprok']);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,6 +15,19 @@ session_start();
         <title id="titre">THALES</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $(".confirm").click(function (e) {
+                    var result = window.confirm('Êtes-vous sûrs de vouloir supprimer ce fichier ?');
+                    if (result == false) {
+                        e.preventDefault();
+                    };
+                });
+            });
+        </script>
     </head>
     <body>
         <header>
@@ -28,6 +46,7 @@ session_start();
                     <div class="card mt-4">
                         <div class="card-header">
                             <h4>Veuillez entrer la date d'exécution du fichier que vous recherchez via cette forme : yy-MM-dd HH-mm-ss <br><br>yy = Année / MM = Mois / dd = Jour / HH = Heure / mm = Minute / ss = Seconde</h4>
+                            <h5><?php if(isset($message)){echo $message;} ?></h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -85,6 +104,12 @@ session_start();
                                                             <div class="input-group mb-3">
                                                                 <input type="hidden" name="page" value="1">
                                                                 <button type="submit" class="btn btn-primary button" name="numfic" value="<?php if(isset($items['numfic'])){echo $items['numfic']; } ?>">Voir fichier</button>
+                                                            </div>
+                                                        </form>
+                                                        <form action="supprfic.php" method="GET">
+                                                            <div class="input-group mb-3">
+                                                                <input type="hidden" name="search" value="<?php if(isset($_GET['search'])){echo $_GET['search'];} ?>">
+                                                                <button type="submit" class="btn button-danger confirm" name="numfic" value="<?php if(isset($items['numfic'])){echo $items['numfic']; } ?>">Supprimer fichier</button>
                                                             </div>
                                                         </form>
                                                         </td>
