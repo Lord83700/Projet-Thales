@@ -13,6 +13,6 @@ foreach ($tab as $i)
     $req->execute();
 }
 
-header ('Location: index.php?search='.$_GET['search']);
+header ('Location: index.php');
 exit();
 ?>

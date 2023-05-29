@@ -18,16 +18,6 @@ if(isset($_SESSION['supprok']))
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $(".confirm").click(function (e) {
-                    var result = window.confirm('Êtes-vous sûrs de vouloir supprimer ce fichier ?');
-                    if (result == false) {
-                        e.preventDefault();
-                    };
-                });
-            });
-        </script>
     </head>
     <body>
         <header>
@@ -51,14 +41,12 @@ if(isset($_SESSION['supprok']))
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-7">
-
-                                    <form action="" method="GET">
-                                        <div class="input-group mb-3">
-                                            <input type="text" name="search" required value="<?php if(isset($_GET['search'])){echo $_GET['search']; } ?>" class="form-control" placeholder="Recherche">
-                                            <button type="submit" class="btn btn-primary">Search</button>
-                                        </div>
-                                    </form>
-
+                                    <div class="input-group mb-3">
+                                        <input type="text" name="search" id="search" class="form-control" placeholder="Recherche">
+                                    </div>
+                                    <div>
+                                        <button id="refresh-button" class="btn btn-primary" type="button">Rafraîchir</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -68,66 +56,16 @@ if(isset($_SESSION['supprok']))
                 <div class="col-md-12">
                     <div class="card mt-4">
                         <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>ID du fichier</th>
-                                        <th>Nom du fichier</th>
-                                        <th>Date du fichier</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                        include ("base.php");
+                            <table id="result" class="table table-bordered">
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-                                        if(isset($_GET['search']))
-                                        {
-                                            $filtre = $_GET['search'];
-                                            $query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,dt) LIKE '%$filtre%' ";
-                                            $req = $bd->prepare($query);
-                                            $req->execute();
-                                            $res = $req->fetchall();
-                                            $count = $req->rowCount();
-                                            $req->closeCursor();
-
-                                            if($count > 0)
-                                            {
-                                                foreach($res as $items)
-                                                {
-                                                    ?>
-                                                    <tr>
-                                                        <td><?= $items['numfic']; ?></td>
-                                                        <td><?= $items['nomfic']; ?></td>
-                                                        <td><?= $items['dt']; ?></td>
-                                                        <td>
-                                                        <form action="affiche.php" method="GET">
-                                                            <div class="input-group mb-3">
-                                                                <input type="hidden" name="page" value="1">
-                                                                <button type="submit" class="btn btn-primary button" name="numfic" value="<?php if(isset($items['numfic'])){echo $items['numfic']; } ?>">Voir fichier</button>
-                                                            </div>
-                                                        </form>
-                                                        <form action="supprfic.php" method="GET">
-                                                            <div class="input-group mb-3">
-                                                                <input type="hidden" name="search" value="<?php if(isset($_GET['search'])){echo $_GET['search'];} ?>">
-                                                                <button type="submit" class="btn button-danger confirm" name="numfic" value="<?php if(isset($items['numfic'])){echo $items['numfic']; } ?>">Supprimer fichier</button>
-                                                            </div>
-                                                        </form>
-                                                        </td>
-                                                    </tr>
-                                                    <?php
-                                                }
-                                            }
-                                            else
-                                            {
-                                                ?>
-                                                    <tr>
-                                                        <td colspan="4">Aucun résultat</td>
-                                                    </tr>
-                                                <?php
-                                            }
-                                        }
-                                    ?>
-                                </tbody>
+                <div class="col-md-12">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <table id="data-table" class="table table-bordered">
                             </table>
                         </div>
                     </div>
@@ -138,3 +76,71 @@ if(isset($_SESSION['supprok']))
         </footer>
     </body>
 </html>
+<script>
+    $(document).ready(function(){
+        $('#search').keyup(function(){
+            var txt = $(this).val();
+            if(txt != '')
+            {
+                $.ajax({
+                    url:"fetch.php",
+                    method:"post",
+                    data:{search:txt},
+                    dataType:"text",
+                    success:function(data)
+                    {
+                        $('#result').html(data);
+                    }
+                });
+            }
+            else
+            {
+                $('#result').html('');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Function to refresh the data
+        function refreshData() {
+            $.ajax({
+                url:'refresh.php', // Replace 'refresh.php' with the URL of your PHP file that contains the query
+                type:'GET',
+                success: function(response) {
+                    $('#data-table').html(response); // Update the table content with the response from the server
+                },
+                error: function() {
+                    alert('Error occurred while refreshing data.');
+                }
+            });
+        }
+
+        // Button click event
+        $('#refresh-button').click(function() {
+            refreshData();
+        });
+
+        // Initial data load
+        refreshData();
+    });
+</script>
+<script>
+        $(document).on('click', '.confirm', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+            var form = $(this).closest('form'); // Get the closest form element
+            
+            $.confirm({
+                title: 'Attention !',
+                content: 'Êtes-vous sûrs de vouloir supprimer ce fichier ?',
+                buttons: {
+                    Oui: function () {
+                        form.trigger('submit'); // Submit the form if the user confirms
+                    },
+                    Annuler: function () {
+                        // Do nothing if the user cancels
+                    }
+                }
+            });
+        });
+</script>

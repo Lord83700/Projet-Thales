@@ -25,9 +25,17 @@ if (isset($_GET["page"])) {
             <p>TEST</p>
         </header>
         <?php
-        $totalrec = "500";
+        include ("base.php");
+        $totalrec = "50";
         $debut = $page - 1;
         $debut = $debut * $totalrec;
+        $query = "SELECT field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic";
+        $req = $bd->prepare($query);
+        $req->bindValue(':numfic', $_GET['numfic']);
+        $req->execute();
+        $count = $req->rowCount();
+        $req->closeCursor();
+        $totalpage = ceil($count / $totalrec);
         ?>
         <nav>
             <a href='oui'>Accueil</a>
@@ -52,7 +60,6 @@ if (isset($_GET["page"])) {
                                             <button type="submit" class="btn btn-primary">Search</button>
                                         </div>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
@@ -61,6 +68,26 @@ if (isset($_GET["page"])) {
 
                 <div class="col-md-12">
                     <div class="card mt-4">
+                    <?php
+                            if ($totalpage > 1) {
+                                $previous = $page - 1;
+                                $next = $page + 1;
+                
+                                echo '<div class="pagination">';
+                                if ($page > 1) {
+                                    echo '<a href="?page=' . $previous . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Previous</a>';
+                                }
+                
+                                for ($i = 1; $i <= $totalpage; $i++) {
+                                    echo '<a href="?page=' . $i . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">' . $i . '</a>';
+                                }
+                
+                                if ($page < $totalpage) {
+                                    echo '<a href="?page=' . $next . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Next</a>';
+                                }
+                                echo '</div>';
+                            }
+                        ?>
                         <div class="card-body">
                             <table class="table table-bordered">
                                 <thead>
@@ -73,22 +100,13 @@ if (isset($_GET["page"])) {
                                 </thead>
                                 <tbody>
                                     <?php 
-                                        include ("base.php");
-
                                         if(isset($_GET['numfic']))
                                         {
-                                            $query = "SELECT field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic";
-                                            $req = $bd->prepare($query);
-                                            $req->bindValue(':numfic', $_GET['numfic']);
-                                            $req->execute();
-                                            $count = $req->rowCount();
-                                            $req->closeCursor();
                                             $filtre = $_GET['numfic'];
                                             $query = "SELECT numtrame,field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT numtrame,field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic ORDER BY date LIMIT $debut,$totalrec";
                                             $req = $bd->prepare($query);
                                             $req->bindValue(':numfic', $_GET['numfic']);
                                             $req->execute();
-                                            $totalpage = $count / $totalrec;
                                             $res = $req->fetchall();
                                             $req->closeCursor();
 
@@ -135,26 +153,6 @@ if (isset($_GET["page"])) {
                                     ?>
                                 </tbody>
                             </table>
-                            <?php
-                            if ($totalpage > 1) {
-                                $previous = $page - 1;
-                                $next = $page + 1;
-                
-                                echo '<div class="pagination">';
-                                if ($page > 1) {
-                                    echo '<a href="?page=' . $previous . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Previous</a>';
-                                }
-                
-                                for ($i = 1; $i <= $totalpage; $i++) {
-                                    echo '<a href="?page=' . $i . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">' . $i . '</a>';
-                                }
-                
-                                if ($page < $totalpage) {
-                                    echo '<a href="?page=' . $next . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Next</a>';
-                                }
-                                echo '</div>';
-                            }
-                            ?>
                         </div>
                     </div>
                 </div>
