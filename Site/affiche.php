@@ -59,6 +59,19 @@ if (isset($_GET["page"])) {
                                             <input type="text" name="search" required value="<?php if(isset($_GET['search'])){echo $_GET['search']; } ?>" class="form-control" placeholder="Recherche">
                                             <button type="submit" class="btn btn-primary">Search</button>
                                         </div>
+                                    </form> 
+                                    <form method="GET" action="">
+                                        <select id="selec_page" name="page" class="btn btn-primary" onchange="this.form.submit();">  
+                                            <option value="Select">Page <?php if(isset($_GET['page'])){echo $_GET['page'];} ?></option> 
+                                            <?php
+                                            if ($totalpage > 1) {
+                                                for ($i = 1; $i <= $totalpage; $i++) {
+                                                    echo '<option value="'.$i.'">'.$i.'</a>';
+                                                }
+                                            }
+                                            ?> 
+                                        <input type="hidden" name="numfic" value="<?php echo $_GET['numfic']; ?>">
+                                        </select>   
                                     </form>
                                 </div>
                             </div>
@@ -68,37 +81,14 @@ if (isset($_GET["page"])) {
 
                 <div class="col-md-12">
                     <div class="card mt-4">
-                    <?php
-                            if ($totalpage > 1) {
-                                $previous = $page - 1;
-                                $next = $page + 1;
-                
-                                echo '<div class="pagination">';
-                                if ($page > 1) {
-                                    echo '<a href="?page=' . $previous . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Previous</a>';
-                                }
-                
-                                for ($i = 1; $i <= $totalpage; $i++) {
-                                    echo '<a href="?page=' . $i . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">' . $i . '</a>';
-                                }
-                
-                                if ($page < $totalpage) {
-                                    echo '<a href="?page=' . $next . '&numfic=' . $_GET['numfic'] . '" class="btn btn-primary">Next</a>';
-                                }
-                                echo '</div>';
-                            }
-                        ?>
                         <div class="card-body">
                             <table class="table table-bordered">
-                                <thead>
                                     <tr>
                                         <th>Numéro de la trame</th>
                                         <th>Type de trame</th>
                                         <th>ID du fichier</th>
                                         <th>Date de la trame</th>
                                     </tr>
-                                </thead>
-                                <tbody>
                                     <?php 
                                         if(isset($_GET['numfic']))
                                         {
@@ -151,7 +141,6 @@ if (isset($_GET["page"])) {
                                             }
                                         }
                                     ?>
-                                </tbody>
                             </table>
                         </div>
                     </div>

@@ -39,16 +39,7 @@
     color: white;
 }
 
-.pagination a {
-    display: inline-block;
-    margin-right: 5px;
-    padding: 5px 10px;
-    background-color: #f2f2f2;
-    color: #333;
-    text-decoration: none;
-}
-
-.pagination a.active {
-    background-color: #4CAF50;
+.btn:hover {
+    background-color: #790f0f;
     color: white;
 }
