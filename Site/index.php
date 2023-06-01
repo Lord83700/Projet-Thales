@@ -83,7 +83,7 @@ if(isset($_SESSION['supprok']))
             if(txt != '')
             {
                 $.ajax({
-                    url:"fetch.php",
+                    url:"fetchfic.php",
                     method:"post",
                     data:{search:txt},
                     dataType:"text",

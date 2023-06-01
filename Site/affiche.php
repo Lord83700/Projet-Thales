@@ -8,6 +8,9 @@ if (isset($_GET["page"])) {
 } else { 
     $page=1; 
 }
+if (isset($_GET["numfic"])) { 
+    $_SESSION['numfic']  = $_GET['numfic'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,6 +21,9 @@ if (isset($_GET["page"])) {
         <title id="titre">THALES</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     </head>
     <body>
 
@@ -53,12 +59,9 @@ if (isset($_GET["page"])) {
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-7">
-
-                                    <form action="" method="GET">
-                                        <div class="input-group mb-3">
-                                            <input type="text" name="search" required value="<?php if(isset($_GET['search'])){echo $_GET['search']; } ?>" class="form-control" placeholder="Recherche">
-                                            <button type="submit" class="btn btn-primary">Search</button>
-                                        </div>
+                                    <div class="input-group mb-3">
+                                        <input type="text" name="search" id="search" class="form-control" placeholder="Recherche">
+                                    </div>
                                     </form> 
                                     <form method="GET" action="">
                                         <select id="selec_page" name="page" class="btn btn-primary" onchange="this.form.submit();">  
@@ -75,6 +78,15 @@ if (isset($_GET["page"])) {
                                     </form>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <table id="result" class="table table-bordered">
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -151,3 +163,27 @@ if (isset($_GET["page"])) {
         </footer>
     </body>
 </html>
+<script>
+    $(document).ready(function(){
+        $('#search').keyup(function(){
+            var txt = $(this).val();
+            if(txt != '')
+            {
+                $.ajax({
+                    url:"fetchtrame.php",
+                    method:"post",
+                    data:{search:txt},
+                    dataType:"text",
+                    success:function(data)
+                    {
+                        $('#result').html(data);
+                    }
+                });
+            }
+            else
+            {
+                $('#result').html('');
+            }
+        });
+    });
+</script>
