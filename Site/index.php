@@ -35,7 +35,7 @@ if(isset($_SESSION['supprok']))
                 <div class="col-md-12">
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h4>Veuillez entrer la date d'exécution du fichier que vous recherchez via cette forme : yy-MM-dd HH-mm-ss <br><br>yy = Année / MM = Mois / dd = Jour / HH = Heure / mm = Minute / ss = Seconde</h4>
+                            <h4 class="text-center font">Recherchez le fichier souhaité par son ID dans la base, par son nom ou par sa date</h4>
                             <h5><?php if(isset($message)){echo $message;} ?></h5>
                         </div>
                         <div class="card-body">
@@ -57,6 +57,7 @@ if(isset($_SESSION['supprok']))
                     <div class="card mt-4">
                         <div class="card-body">
                             <table id="result" class="table table-bordered">
+                            <h4 class="text-center text-decoration-underline font">Affichage des fichiers par recherche</h4>
                             </table>
                         </div>
                     </div>
@@ -66,6 +67,7 @@ if(isset($_SESSION['supprok']))
                     <div class="card mt-4">
                         <div class="card-body">
                             <table id="data-table" class="table table-bordered">
+                                <h4 class="text-center text-decoration-underline font">Affichage des 5 derniers fichiers insérés dans la base de données</h4>
                             </table>
                         </div>
                     </div>

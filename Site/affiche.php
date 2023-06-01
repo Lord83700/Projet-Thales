@@ -54,7 +54,7 @@ if (isset($_GET["numfic"])) {
                 <div class="col-md-12">
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h4>Veuillez entrer la date d'exécution du fichier que vous recherchez via cette forme : yy-MM-dd HH-mm-ss <br><br>yy = Année / MM = Mois / dd = Jour / HH = Heure / mm = Minute / ss = Seconde</h4>
+                        <h4 class="text-center font">Recherchez la trame souhaité par son ID dans la base ou par sa date</h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -64,7 +64,7 @@ if (isset($_GET["numfic"])) {
                                     </div>
                                     </form> 
                                     <form method="GET" action="">
-                                        <select id="selec_page" name="page" class="btn btn-primary" onchange="this.form.submit();">  
+                                        <select id="selec_page" name="page" class="btn btn-primary page" onchange="this.form.submit();">  
                                             <option value="Select">Page <?php if(isset($_GET['page'])){echo $_GET['page'];} ?></option> 
                                             <?php
                                             if ($totalpage > 1) {
@@ -86,6 +86,7 @@ if (isset($_GET["numfic"])) {
                     <div class="card mt-4">
                         <div class="card-body">
                             <table id="result" class="table table-bordered">
+                            <h4 class="text-center text-decoration-underline font">Affichage des trames du fichier sélectionné par recherche</h4>
                             </table>
                         </div>
                     </div>
@@ -95,6 +96,7 @@ if (isset($_GET["numfic"])) {
                     <div class="card mt-4">
                         <div class="card-body">
                             <table class="table table-bordered">
+                            <h4 class="text-center text-decoration-underline font">Affichage des trames du fichier sélectionné par page</h4>
                                     <tr>
                                         <th>Numéro de la trame</th>
                                         <th>Type de trame</th>

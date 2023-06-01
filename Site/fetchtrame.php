@@ -2,11 +2,19 @@
 session_start();
 include ('base.php');
 $output = '';
-$sql = "SELECT numtrame,field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT numtrame,field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic LIKE '%".$_POST["search"]."%'";
+$search = $_POST["search"];
+$numfic = $_SESSION['numfic'];
+
+$sql = "SELECT numtrame, field1, numfic, date FROM trame800 WHERE numfic = :numfic AND (numtrame LIKE :search OR field1 LIKE :search OR date LIKE :search)
+        UNION
+        SELECT numtrame, field1, numfic, date FROM trame806 WHERE numfic = :numfic AND (numtrame LIKE :search OR field1 LIKE :search OR date LIKE :search)
+        LIMIT 50";
+
 $req = $bd->prepare($sql);
-$req->bindValue(':numfic', $_SESSION['numfic']);
+$req->bindValue(':numfic', $numfic);
+$req->bindValue(':search', '%' . $search . '%');
 $req->execute();
-$res = $req->fetchall();
+$res = $req->fetchAll();
 $count = $req->rowCount();
 $req->closeCursor();
 if($count > 0)

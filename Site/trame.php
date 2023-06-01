@@ -39,6 +39,7 @@ session_start();
                     <div class="card mt-4">
                         <div class="card-body">
                             <table class="table table-bordered">
+                            <h4 class="text-center font">Affichage des informations concernant la trame choisi</h4>
                                     <?php 
                                         include ("base.php");
 
