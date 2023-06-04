@@ -57,7 +57,7 @@ if(isset($_SESSION['supprok']))
                     <div class="card mt-4">
                         <div class="card-body">
                             <table id="result" class="table table-bordered">
-                            <h4 class="text-center text-decoration-underline font">Affichage des fichiers par recherche</h4>
+                            <h4 class="text-center font">Affichage des fichiers par recherche</h4>
                             </table>
                         </div>
                     </div>
@@ -67,7 +67,7 @@ if(isset($_SESSION['supprok']))
                     <div class="card mt-4">
                         <div class="card-body">
                             <table id="data-table" class="table table-bordered">
-                                <h4 class="text-center text-decoration-underline font">Affichage des 5 derniers fichiers insérés dans la base de données</h4>
+                                <h4 class="text-center font">Affichage des 5 derniers fichiers insérés dans la base de données</h4>
                             </table>
                         </div>
                     </div>

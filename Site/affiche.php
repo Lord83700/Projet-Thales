@@ -1,8 +1,5 @@
 <?php
 session_start();
-if (empty($_SESSION['page'])){
-    $_SESSION['page']=1;
-}
 if (isset($_GET["page"])) { 
     $page  = $_GET["page"];
 } else { 
@@ -49,20 +46,12 @@ if (isset($_GET["numfic"])) {
             <a href='oui'>TEST</a>
             <a href='oui'>TEST</a>
         </nav>
-        <div class="container">
-            <div class="row">
+
                 <div class="col-md-12">
                     <div class="card mt-4">
-                        <div class="card-header">
-                        <h4 class="text-center font">Recherchez la trame souhaité par son ID dans la base ou par sa date</h4>
-                        </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="search" id="search" class="form-control" placeholder="Recherche">
-                                    </div>
-                                    </form> 
+                            <table class="table table-bordered">
+                                <h4 class="text-center font">Affichage des trames du fichier sélectionné par page</h4>
                                     <form method="GET" action="">
                                         <select id="selec_page" name="page" class="btn btn-primary page" onchange="this.form.submit();">  
                                             <option value="Select">Page <?php if(isset($_GET['page'])){echo $_GET['page'];} ?></option> 
@@ -73,30 +62,9 @@ if (isset($_GET["numfic"])) {
                                                 }
                                             }
                                             ?> 
-                                        <input type="hidden" name="numfic" value="<?php echo $_GET['numfic']; ?>">
+                                            <input type="hidden" name="numfic" value="<?php echo $_GET['numfic']; ?>">
                                         </select>   
                                     </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <table id="result" class="table table-bordered">
-                            <h4 class="text-center text-decoration-underline font">Affichage des trames du fichier sélectionné par recherche</h4>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                            <h4 class="text-center text-decoration-underline font">Affichage des trames du fichier sélectionné par page</h4>
                                     <tr>
                                         <th>Numéro de la trame</th>
                                         <th>Type de trame</th>
@@ -106,6 +74,11 @@ if (isset($_GET["numfic"])) {
                                     <?php 
                                         if(isset($_GET['numfic']))
                                         {
+                                            $totalrec = "50";
+                                            $debut = $page - 1;
+                                            $debut = $debut * $totalrec;
+                                            $listnumtrame = array();
+                                            $listtypetrame = array();
                                             $filtre = $_GET['numfic'];
                                             $query = "SELECT numtrame,field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT numtrame,field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic ORDER BY date LIMIT $debut,$totalrec";
                                             $req = $bd->prepare($query);
@@ -136,7 +109,8 @@ if (isset($_GET["numfic"])) {
                                                         <td>
                                                         <form action="trame.php" method="GET">
                                                             <div class="input-group mb-3">
-                                                                <input type="hidden" name="typetrame" value=<?php echo $typetrame; ?>>
+                                                                <input type="hidden" name="page" value=<?php echo $_GET['page']; ?>>
+                                                                <input type="hidden" name="numfic" value=<?php echo $_GET['numfic']; ?>>
                                                                 <button type="submit" class="btn btn-primary button" name="numtrame" value="<?php if(isset($items['numtrame'])){echo $items['numtrame']; } ?>">Voir trame</button>
                                                             </div>
                                                         </form>
@@ -165,27 +139,3 @@ if (isset($_GET["numfic"])) {
         </footer>
     </body>
 </html>
-<script>
-    $(document).ready(function(){
-        $('#search').keyup(function(){
-            var txt = $(this).val();
-            if(txt != '')
-            {
-                $.ajax({
-                    url:"fetchtrame.php",
-                    method:"post",
-                    data:{search:txt},
-                    dataType:"text",
-                    success:function(data)
-                    {
-                        $('#result').html(data);
-                    }
-                });
-            }
-            else
-            {
-                $('#result').html('');
-            }
-        });
-    });
-</script>
