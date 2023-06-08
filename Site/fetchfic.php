@@ -31,7 +31,7 @@ if($count > 0)
                             <button type="submit" class="btn btn-primary button" name="numfic" value="'.$row['numfic'].'">Voir fichier</button>
                         </div>
                     </form>
-                    <form action="supprfic.php" method="GET">
+                    <form action="supprfic.php" method="POST">
                         <div class="input-group mb-3">
                             <input type="hidden" name="numfic" value="'.$row['numfic'].'">
                             <input type="hidden" name="search" value="'.$_POST['search'].'">

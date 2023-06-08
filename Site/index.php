@@ -108,7 +108,7 @@ if(isset($_SESSION['supprok']))
         function refreshData() {
             $.ajax({
                 url:'refresh.php', // Replace 'refresh.php' with the URL of your PHP file that contains the query
-                type:'GET',
+                type:'POST',
                 success: function(response) {
                     $('#data-table').html(response); // Update the table content with the response from the server
                 },

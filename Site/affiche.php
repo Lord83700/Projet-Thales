@@ -5,9 +5,6 @@ if (isset($_GET["page"])) {
 } else { 
     $page=1; 
 }
-if (isset($_GET["numfic"])) { 
-    $_SESSION['numfic']  = $_GET['numfic'];
-}
 ?>
 <!DOCTYPE html>
 <html>

@@ -33,10 +33,9 @@ if($count > 0)
                     <button type="submit" class="btn btn-primary button" name="numfic" value="<?php if(isset($items['numfic'])){echo $items['numfic']; } ?>">Voir fichier</button>
                 </div>
             </form>
-            <form action="supprfic.php" method="GET">
+            <form action="supprfic.php" method="POST">
                 <div class="input-group mb-3">
                     <input type="hidden" name="numfic" value="<?php if(isset($items['numfic'])){echo $items['numfic']; } ?>">
-                    <input type="hidden" name="search" value="<?php if(isset($_GET['search'])){echo $_GET['search'];} ?>">
                     <button type="submit" id="deleteform" class="btn button-danger confirm">Supprimer fichier</button>
                 </div>
             </form>

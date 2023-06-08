@@ -110,8 +110,6 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                             <th>Numéro du fichier</th>
                                             <th>Date de la trame</th>
                                             <th>PMID</th>
-                                            <th>Bench3</th>
-                                            <th>Bench5</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -120,14 +118,26 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                         <td><?= $items['numfic']; ?></td>
                                         <td><?= $items['date']; ?></td>
                                         <td><?= $items['pmid']; ?></td>
-                                        <td><?= $items['bench3']; ?></td>
-                                        <td><?= $items['bench5']; ?></td>
                                     </tr>
                                     </tbody>
                                     <thead>
                                         <tr>
+                                            <th>Bench3</th>
+                                            <th>Bench5</th>
                                             <th>Taille de la trame</th>
                                             <th>MAC Destination</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><?= $items['bench3']; ?></td>
+                                            <td><?= $items['bench5']; ?></td>
+                                            <td><?= $items['framesize']; ?></td>
+                                            <td><?= $items['macdst']; ?></td>                                  
+                                        </tr>
+                                    </tbody>
+                                    <thead>
+                                        <tr>
                                             <th>MAC Source</th>
                                             <th>Type de la trame</th>
                                             <th>Field2</th>
@@ -136,12 +146,10 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><?= $items['framesize']; ?></td>
-                                            <td><?= $items['macdst']; ?></td>
                                             <td><?= $items['macsrc']; ?></td>
                                             <td>0x<?= $items['field1']; ?></td>
                                             <td><?= $items['field2']; ?></td>
-                                            <td><?= $items['field3']; ?></td>                                    
+                                            <td><?= $items['field3']; ?></td>                                     
                                         </tr>
                                     </tbody>
                                     <thead>
@@ -150,8 +158,6 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                             <th>Field5</th>
                                             <th>Field6</th>
                                             <th>Field7</th>
-                                            <th>IP Source</th>
-                                            <th>IP Destination</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -159,15 +165,27 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                             <td><?= $items['field4']; ?></td>
                                             <td><?= $items['field5']; ?></td>
                                             <td><?= $items['field6']; ?></td>
-                                            <td><?= $items['field7']; ?></td>
-                                            <td><?= $items['ipsrc']; ?></td>
-                                            <td><?= $items['ipdst']; ?></td>                                     
+                                            <td><?= $items['field7']; ?></td>                                  
                                         </tr>
                                     </tbody>
                                     <thead>
                                         <tr>
+                                            <th>IP Source</th>
+                                            <th>IP Destination</th>
                                             <th>Field9</th>
                                             <th>Field10</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><?= $items['ipsrc']; ?></td>
+                                            <td><?= $items['ipdst']; ?></td>  
+                                            <td><?= $items['field9']; ?></td>
+                                            <td><?= $items['field10']; ?></td>                                    
+                                        </tr>
+                                    </tbody>
+                                    <thead>
+                                        <tr>
                                             <th>Field11</th>
                                             <th>Field14</th>
                                             <th>Field16</th>
@@ -176,22 +194,18 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><?= $items['field9']; ?></td>
-                                            <td><?= $items['field10']; ?></td>  
                                             <td><?= $items['field11']; ?></td>
                                             <td><?= $items['field14']; ?></td>
                                             <td><?= $items['field16']; ?></td>
-                                            <td><?= $items['field17']; ?></td>                                    
+                                            <td><?= $items['field17']; ?></td>                                          
                                         </tr>
-                                    </tbody>
+                                    </tbody>    
                                     <thead>
                                         <tr>
                                             <th>Field18</th>
                                             <th>Field20</th>
                                             <th>Field21</th>
                                             <th>Field23</th>
-                                            <th>Field25</th>
-                                            <th>Field26</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -199,15 +213,27 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                             <td><?= $items['field18']; ?></td>
                                             <td><?= $items['field20']; ?></td>
                                             <td><?= $items['field21']; ?></td>
-                                            <td><?= $items['field23']; ?></td>
-                                            <td><?= $items['field25']; ?></td>
-                                            <td><?= $items['field26']; ?></td>                                    
+                                            <td><?= $items['field23']; ?></td>                                
                                         </tr>
                                     </tbody>
                                     <thead>
                                         <tr>
+                                            <th>Field25</th>
+                                            <th>Field26</th>
                                             <th>Field28</th>
                                             <th>Field29</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><?= $items['field25']; ?></td>
+                                            <td><?= $items['field26']; ?></td>  
+                                            <td><?= $items['field28']; ?></td>
+                                            <td><?= $items['field29']; ?></td>                               
+                                        </tr>
+                                    </tbody>
+                                    <thead>
+                                        <tr>
                                             <th>Field30</th>
                                             <th>Field32</th>
                                             <th>Field333435</th>
@@ -216,14 +242,12 @@ $listcombined = array_combine($listnumtrame, $listtypetrame);
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><?= $items['field28']; ?></td>
-                                            <td><?= $items['field29']; ?></td>
                                             <td><?= $items['field30']; ?></td>
                                             <td><?= $items['field32']; ?></td>
                                             <td><?= $items['field333435']; ?></td>
-                                            <td><?= $items['timepacket']; ?></td>                                         
+                                            <td><?= $items['timepacket']; ?></td>                                    
                                         </tr>
-                                    </tbody>                            
+                                    </tbody>                      
                                     <?php
                                     }
                                 }
