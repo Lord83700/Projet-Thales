@@ -1,6 +1,6 @@
 <?php
 include ('base.php');
-$query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,dt) ORDER BY numfic DESC LIMIT 0,5 ";
+$query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,obsw,bds,tv,dt) ORDER BY numfic DESC LIMIT 0,5 ";
 $req = $bd->prepare($query);
 $req->execute();
 $res = $req->fetchall();
@@ -13,9 +13,12 @@ if($count > 0)
     <div class="table-responsive">
         <table class="table table-bordered">
             <tr>
-                <th>ID du fichier</th>
-                <th>Nom du fichier</th>
-                <th>Date du fichier</th>
+                <th><?php if(isset($_COOKIE['numfic'])){echo $_COOKIE['numfic'];}else{echo "ID du fichier";} ?></th>
+                <th><?php if(isset($_COOKIE['nomfic'])){echo $_COOKIE['nomfic'];}else{echo "Nom du fichier";} ?></th>
+                <th><?php if(isset($_COOKIE['obsw'])){echo $_COOKIE['obsw'];}else{echo "Type et version OBSW";} ?></th>
+                <th><?php if(isset($_COOKIE['bds'])){echo $_COOKIE['bds'];}else{echo "version BDS";} ?></th>
+                <th><?php if(isset($_COOKIE['tv'])){echo $_COOKIE['tv'];}else{echo "Type et version moyen";} ?></th>
+                <th><?php if(isset($_COOKIE['dt'])){echo $_COOKIE['dt'];}else{echo "Date du fichier";} ?></th>
                 <th></th>
             </tr>
     <?php    
@@ -25,6 +28,9 @@ if($count > 0)
         <tr>
             <td><?= $items['numfic']; ?></td>
             <td><?= $items['nomfic']; ?></td>
+            <td><?php echo !empty($items['obsw']) ? $items['obsw'] : "Non défini"; ?></td>
+            <td><?php echo !empty($items['bds']) ? $items['bds'] : "Non défini"; ?></td>
+            <td><?php echo !empty($items['bds']) ? $items['bds'] : "Non défini"; ?></td>
             <td><?= $items['dt']; ?></td>
             <td>
             <form action="affiche.php" method="GET">

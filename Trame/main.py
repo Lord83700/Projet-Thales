@@ -61,6 +61,7 @@ if __name__ == '__main__':
     elif args.nom and args.date:
         
         dt = args.date
+        dt = dt.replace("/"," ")
         nt = args.nom
 
         curseur = connection.cursor() # Création d'un curseur afin d'initier des requêtes SQL auprès de la base

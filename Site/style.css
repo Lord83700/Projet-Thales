@@ -44,9 +44,56 @@
     color: white;
 }
 
+.conf:hover {
+    background-color: #127492;
+    color: white;
+}
+
+.conf {
+    background-color: #1097b9;
+    color: white;
+}
+
 .font {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color:#0d6efd;
     color: white;
     border-radius: 10px;
+    padding: 10px;
+}
+
+.background-img {
+    background-color: white;
+}
+
+.active-link {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.active-link:hover {
+    background-color: #0f489c;
+    color: white;
+}
+
+#scrollToTopBtn {
+    display: none; /* Hide the button by default */
+    position: fixed; /* Fixed position to keep it visible */
+    bottom: 20px; /* Adjust the position as per your preference */
+    right: 20px; /* Adjust the position as per your preference */
+    z-index: 99; /* Ensure it's above other elements */
+    cursor: pointer;
+    background-color: aliceblue;
+}
+
+.unactive-link:hover {
+    background-color: aliceblue;
+}
+
+.clickable {
+    cursor: pointer;
+}
+  
+.selected {
+    background-color: yellow;
 }

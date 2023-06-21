@@ -1,9 +1,16 @@
 <?php
 session_start();
-if (isset($_GET["page"])) { 
+if (isset($_GET["page"])) 
+{ 
     $page  = $_GET["page"];
-} else { 
+}
+else 
+{ 
     $page=1; 
+}
+if (isset($_COOKIE["totalrec"]))
+{
+    $totalrec = $_COOKIE["totalrec"];
 }
 ?>
 <!DOCTYPE html>
@@ -20,13 +27,8 @@ if (isset($_GET["page"])) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     </head>
     <body>
-
-        <header>
-            <p>TEST</p>
-        </header>
         <?php
         include ("base.php");
-        $totalrec = "50";
         $debut = $page - 1;
         $debut = $debut * $totalrec;
         $query = "SELECT field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic";
@@ -37,12 +39,19 @@ if (isset($_GET["page"])) {
         $req->closeCursor();
         $totalpage = ceil($count / $totalrec);
         ?>
-        <nav>
-            <a href='oui'>Accueil</a>
-            <a href='oui'>Crédit</a>
-            <a href='oui'>TEST</a>
-            <a href='oui'>TEST</a>
+        <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">
+            <img src="Thales_Alenia_Space_Logo.svg.png" width="150" height="60" class="d-inline-block align-top" alt="">
+        </a>
+        <a class="navbar-brand ml-auto">
+            <img src="Logo-couple-IUT-horizontal-CMJN-05-07-1-1024x415.jpg" width="150" height="60" class="align-top" alt="">
+        </a>
         </nav>
+        <nav class="nav nav-pills nav-justified">
+        <a class="nav-item nav-link unactive-link" href="index.php">Accueil</a>
+        <a class="nav-item nav-link unactive-link" href="conf.php">Configuration</a>
+        </nav>
+        <button id="scrollToTopBtn" class="btn">Retourne en haut</button>
 
                 <div class="col-md-12">
                     <div class="card mt-4">
@@ -135,10 +144,10 @@ if (isset($_GET["page"])) {
                                                             <h4 id="<?= $restotal[$i]['numtrame']; ?>" class="text-center font">Affichage des informations concernant la trame <?php echo $restotal[$i]['numtrame']; ?></h4>
                                                     <thead>
                                                         <tr>
-                                                            <th>Numéro de la trame</th>
-                                                            <th>Numéro du fichier</th>
-                                                            <th>Date de la trame</th>
-                                                            <th>PMID</th>
+                                                            <th><?php if(isset($_COOKIE['numtrame'])){echo $_COOKIE['numtrame'];}else{echo "Numéro de la trame";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['numfic'])){echo $_COOKIE['numfic'];}else{echo "Numéro du fichier";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['date'])){echo $_COOKIE['date'];}else{echo "Date de la trame";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['pmid'])){echo $_COOKIE['pmid'];}else{echo "PMID";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -151,10 +160,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>
                                                     <thead>
                                                         <tr>
-                                                            <th>Bench3</th>
-                                                            <th>Bench5</th>
-                                                            <th>Taille de la trame</th>
-                                                            <th>MAC Destination</th>
+                                                            <th><?php if(isset($_COOKIE['bench3'])){echo $_COOKIE['bench3'];}else{echo "Bench3";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['bench5'])){echo $_COOKIE['bench5'];}else{echo "Bench5";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['framesize'])){echo $_COOKIE['framesize'];}else{echo "Taille de la trame";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['macdst'])){echo $_COOKIE['macdst'];}else{echo "MAC Destination";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -167,10 +176,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>
                                                     <thead>
                                                         <tr>
-                                                            <th>MAC Source</th>
-                                                            <th>Type de la trame</th>
-                                                            <th>Field2</th>
-                                                            <th>Field3</th>
+                                                            <th><?php if(isset($_COOKIE['macsrc'])){echo $_COOKIE['macsrc'];}else{echo "MAC Source";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field1'])){echo $_COOKIE['field1'];}else{echo "Type de la trame";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field2'])){echo $_COOKIE['field2'];}else{echo "Field2";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field3'])){echo $_COOKIE['field3'];}else{echo "Field3";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -183,10 +192,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>
                                                     <thead>
                                                         <tr>
-                                                            <th>Field4</th>
-                                                            <th>Field5</th>
-                                                            <th>Field6</th>
-                                                            <th>Field7</th>
+                                                            <th><?php if(isset($_COOKIE['field4'])){echo $_COOKIE['field4'];}else{echo "Field4";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field5'])){echo $_COOKIE['field5'];}else{echo "Field5";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field6'])){echo $_COOKIE['field6'];}else{echo "Field6";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field7'])){echo $_COOKIE['field7'];}else{echo "Field7";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -199,10 +208,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>
                                                     <thead>
                                                         <tr>
-                                                            <th>IP Source</th>
-                                                            <th>IP Destination</th>
-                                                            <th>Field9</th>
-                                                            <th>Field10</th>
+                                                            <th><?php if(isset($_COOKIE['ipsrc'])){echo $_COOKIE['ipsrc'];}else{echo "IP Source";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['ipdst'])){echo $_COOKIE['ipdst'];}else{echo "IP Destination";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field9'])){echo $_COOKIE['field9'];}else{echo "Field9";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field10'])){echo $_COOKIE['field10'];}else{echo "Field10";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -215,10 +224,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>
                                                     <thead>
                                                         <tr>
-                                                            <th>Field11</th>
-                                                            <th>Field14</th>
-                                                            <th>Field16</th>
-                                                            <th>Field17</th>
+                                                            <th><?php if(isset($_COOKIE['field11'])){echo $_COOKIE['field11'];}else{echo "Field11";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field14'])){echo $_COOKIE['field14'];}else{echo "Field14";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field16'])){echo $_COOKIE['field16'];}else{echo "Field16";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field17'])){echo $_COOKIE['field17'];}else{echo "Field17";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -231,10 +240,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>    
                                                     <thead>
                                                         <tr>
-                                                            <th>Field18</th>
-                                                            <th>Field20</th>
-                                                            <th>Field21</th>
-                                                            <th>Field23</th>
+                                                            <th><?php if(isset($_COOKIE['field18'])){echo $_COOKIE['field18'];}else{echo "Field18";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field20'])){echo $_COOKIE['field20'];}else{echo "Field20";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field21'])){echo $_COOKIE['field21'];}else{echo "Field21";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field23'])){echo $_COOKIE['field23'];}else{echo "Field23";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -247,10 +256,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>
                                                     <thead>
                                                         <tr>
-                                                            <th>Field25</th>
-                                                            <th>Field26</th>
-                                                            <th>Field28</th>
-                                                            <th>Field29</th>
+                                                            <th><?php if(isset($_COOKIE['field25'])){echo $_COOKIE['field25'];}else{echo "Field25";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field26'])){echo $_COOKIE['field26'];}else{echo "Field26";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field28'])){echo $_COOKIE['field28'];}else{echo "Field28";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field29'])){echo $_COOKIE['field29'];}else{echo "Field29";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -263,10 +272,10 @@ if (isset($_GET["page"])) {
                                                     </tbody>
                                                     <thead>
                                                         <tr>
-                                                            <th>Field30</th>
-                                                            <th>Field32</th>
-                                                            <th>Field333435</th>
-                                                            <th>Timepacket</th>
+                                                            <th><?php if(isset($_COOKIE['field30'])){echo $_COOKIE['field30'];}else{echo "Field30";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field32'])){echo $_COOKIE['field32'];}else{echo "Field32";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['field333435'])){echo $_COOKIE['field333435'];}else{echo "Field333435";} ?></th>
+                                                            <th><?php if(isset($_COOKIE['timepacket'])){echo $_COOKIE['timepacket'];}else{echo "Timepacket";} ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -289,12 +298,12 @@ if (isset($_GET["page"])) {
                                                                 <h4 id="<?= $restotal[$i]['numtrame']; ?>" class="text-center font">Affichage des informations concernant la trame <?php echo $restotal[$i]['numtrame']; ?></h4>
                                                         <thead>
                                                             <tr>
-                                                                <th>Numéro de la trame</th>
-                                                                <th>Numéro du fichier</th>
-                                                                <th>Date de la trame</th>
-                                                                <th>Bench3</th>
-                                                                <th>Bench5</th>
-                                                                <th>Taille du paquet</th>
+                                                                <th><?php if(isset($_COOKIE['numtrame'])){echo $_COOKIE['numtrame'];}else{echo "Numéro de la trame";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['numfic'])){echo $_COOKIE['numfic'];}else{echo "Numéro du fichier";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['date'])){echo $_COOKIE['date'];}else{echo "Date de la trame";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['bench3'])){echo $_COOKIE['bench3'];}else{echo "Bench3";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['bench5'])){echo $_COOKIE['bench5'];}else{echo "Bench5";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['framesize'])){echo $_COOKIE['framesize'];}else{echo "Taille de la trame";} ?></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -309,12 +318,12 @@ if (isset($_GET["page"])) {
                                                         </tbody>
                                                         <thead>
                                                             <tr>
-                                                                <th>MAC Destination</th>
-                                                                <th>MAC Source</th>
-                                                                <th>Type de la trame</th>
-                                                                <th>Field2</th>
-                                                                <th>Field3</th>
-                                                                <th>Field4</th>
+                                                                <th><?php if(isset($_COOKIE['macdst'])){echo $_COOKIE['macdst'];}else{echo "MAC Destination";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['macsrc'])){echo $_COOKIE['macsrc'];}else{echo "MAC Source";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['field1'])){echo $_COOKIE['field1'];}else{echo "Type de la trame";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['field2'])){echo $_COOKIE['field2'];}else{echo "Field2";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['field3'])){echo $_COOKIE['field3'];}else{echo "Field3";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['field4'])){echo $_COOKIE['field4'];}else{echo "Field4";} ?></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -329,12 +338,12 @@ if (isset($_GET["page"])) {
                                                         </tbody>
                                                         <thead>
                                                             <tr>
-                                                                <th>Field5</th>
-                                                                <th>Field6</th>
-                                                                <th>MAC Sender</th>
-                                                                <th>IP Sender</th>
-                                                                <th>MAC Target</th>
-                                                                <th>IP Target</th>
+                                                                <th><?php if(isset($_COOKIE['field5'])){echo $_COOKIE['field5'];}else{echo "Field5";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['field6'])){echo $_COOKIE['field6'];}else{echo "Field6";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['macsender'])){echo $_COOKIE['macsender'];}else{echo "MAC Sender";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['ipsender'])){echo $_COOKIE['ipsender'];}else{echo "IP Sender";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['mactarget'])){echo $_COOKIE['mactarget'];}else{echo "MAC Target";} ?></th>
+                                                                <th><?php if(isset($_COOKIE['iptarget'])){echo $_COOKIE['iptarget'];}else{echo "IP Target";} ?></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -361,6 +370,19 @@ if (isset($_GET["page"])) {
                                             }                       
                                             ?>
                             </table>
+                            <form method="GET" action="">
+                                <select id="selec_page" name="page" class="btn btn-primary page" onchange="this.form.submit();">  
+                                    <option value="Select">Page <?php if(isset($_GET['page'])){echo $_GET['page'];} ?></option> 
+                                    <?php
+                                    if ($totalpage > 1) {
+                                        for ($i = 1; $i <= $totalpage; $i++) {
+                                            echo '<option value="'.$i.'">'.$i.'</a>';
+                                        }
+                                    }
+                                    ?> 
+                                    <input type="hidden" name="numfic" value="<?php echo $_GET['numfic']; ?>">
+                                </select>   
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -370,3 +392,28 @@ if (isset($_GET["page"])) {
         </footer>
     </body>
 </html>
+<script>
+// montre le bouton quand la page descend
+window.onscroll = function() {
+  showScrollButton();
+};
+
+function showScrollButton() {
+  var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    scrollToTopBtn.style.display = "block";
+  } else {
+    scrollToTopBtn.style.display = "none";
+  }
+}
+
+// scroll en haut de la page quand le bouton est cliqué
+document.getElementById("scrollToTopBtn").onclick = function() {
+  scrollToTop();
+};
+
+function scrollToTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>

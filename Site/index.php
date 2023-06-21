@@ -20,15 +20,17 @@ if(isset($_SESSION['supprok']))
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     </head>
     <body>
-        <header>
-            <p>TEST</p>
-        </header>
-
-        <nav>
-            <a href='oui'>Accueil</a>
-            <a href='oui'>Crédit</a>
-            <a href='oui'>TEST</a>
-            <a href='oui'>TEST</a>
+        <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">
+            <img src="Thales_Alenia_Space_Logo.svg.png" width="150" height="60" class="d-inline-block align-top" alt="">
+        </a>
+        <a class="navbar-brand ml-auto">
+            <img src="Logo-couple-IUT-horizontal-CMJN-05-07-1-1024x415.jpg" width="150" height="60" class="align-top" alt="">
+        </a>
+        </nav>
+        <nav class="nav nav-pills nav-justified">
+        <a class="nav-item nav-link active-link" href="index.php">Accueil</a>
+        <a class="nav-item nav-link unactive-link" href="conf.php">Configuration</a>
         </nav>
         <div class="container">
             <div class="row">
