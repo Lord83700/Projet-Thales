@@ -1,14 +1,16 @@
 <?php
-include ('base.php');
-$query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,dt) ORDER BY numfic DESC LIMIT 0,5 ";
-$req = $bd->prepare($query);
-$req->execute();
-$res = $req->fetchall();
-$count = $req->rowCount();
-$req->closeCursor();
+include ('base.php'); // Inclure le fichier de configuration de la base de données
 
-if($count > 0)
-{
+$query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,dt) ORDER BY numfic DESC LIMIT 0,5";
+$req = $bd->prepare($query); // Préparer la requête SQL
+$req->execute(); // Exécuter la requête
+$res = $req->fetchall(); // Récupérer tous les résultats de la requête
+$count = $req->rowCount(); // Compter le nombre de résultats retournés
+$req->closeCursor(); // Fermer le curseur de la requête
+
+if ($count > 0) { // Vérifier s'il y a des résultats
+
+    // Vérifier si cookie existant sinon texte par défaut
     ?>
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -21,9 +23,10 @@ if($count > 0)
                 <th><?php if(isset($_COOKIE['dt'])){echo $_COOKIE['dt'];}else{echo "Date du fichier";} ?></th>
                 <th></th>
             </tr>
-    <?php    
-    foreach($res as $items)
-    {
+    <?php
+    foreach($res as $items) { // Parcourir chaque résultat
+
+        // Vérifier si certains champs vide sinon afficher leur valeur
         ?>
         <tr>
             <td><?= $items['numfic']; ?></td>
@@ -50,8 +53,7 @@ if($count > 0)
         <?php
     }
 }
-else
-{
+else {
     ?>  
     <tr>
         <td colspan="4">Aucun résultat</td>

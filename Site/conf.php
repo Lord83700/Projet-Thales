@@ -1,16 +1,18 @@
 <?php
+// Vérifie si une colonne est sélectionnée et met à jour le titre correspondant dans les cookies
 if (isset($_POST["column"])) 
 {
     $selectedColumn = $_POST["column"];
     $newTitle = $_POST["newTitle"];
-    setcookie($selectedColumn, $newTitle, time() + 3600 * 24 * 365);
-    $_COOKIE[$selectedColumn] = $newTitle;
+    setcookie($selectedColumn, $newTitle, time() + 3600 * 24 * 365); // Définit le cookie avec une durée de validité d'un an
+    $_COOKIE[$selectedColumn] = $newTitle; // Met à jour la valeur du cookie dans la variable $_COOKIE
 }
 
+// Vérifie si le nombre total de trames est envoyé via le formulaire et met à jour le cookie correspondant
 if (isset($_POST["totalrec"])) 
 {
-    setcookie("totalrec", $_POST["totalrec"], time() + 3600 * 24 * 365);
-    $_COOKIE['totalrec'] = $_POST["totalrec"];
+    setcookie("totalrec", $_POST["totalrec"], time() + 3600 * 24 * 365); // Définit le cookie avec une durée de validité d'un an
+    $_COOKIE['totalrec'] = $_POST["totalrec"]; // Met à jour la valeur du cookie dans la variable $_COOKIE
 }
 ?>
 <!DOCTYPE html>
@@ -69,6 +71,8 @@ if (isset($_POST["totalrec"]))
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-7">
+                                <!-- // Récupère la valeur de la colonne à partir du cookie correspondant ou utilise une valeur par défaut -->
+                                <!-- // Formulaire retournant le nouveau nom tapé pour un champ choisi -->
                                 <h2>Choix des noms des champs pour les trames</h2>
                                     <form action="" method="POST">
                                         <label for="column">Selection des champs :</label>
@@ -119,6 +123,7 @@ if (isset($_POST["totalrec"]))
                                         <button type="submit" class="btn btn-primary";>Remplacer nom</button>
                                     </form>
                                     <br>
+                                    <!-- // Formulaire retournant le nouveau nombre de trames par page choisi -->
                                     <h2>Choix du nombre de trames affichées par page</h2>
                                     <form action="" method="POST">
                                         <label for="totalrec">Selection du nombre de trames :</label>
@@ -146,6 +151,8 @@ if (isset($_POST["totalrec"]))
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-7">
+                                <!-- // Récupère la valeur de la colonne à partir du cookie correspondant ou utilise une valeur par défaut -->
+                                <!-- // Formulaire retournant le nouveau nom tapé pour un champ choisi -->
                                 <h2>Choix des noms des champs pour les fichier</h2>
                                     <form action="" method="POST">
                                         <label for="column">Selection des champs :</label>

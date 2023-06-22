@@ -1,141 +1,148 @@
 <?php
 session_start();
-if (isset($_GET["page"])) 
-{ 
-    $page  = $_GET["page"];
+
+// Vérifie si le paramètre "page" est défini dans la requête GET
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
+} else {
+    $page = 1; // Valeur par défaut si le paramètre "page" n'est pas défini
 }
-else 
-{ 
-    $page=1; 
-}
-if (isset($_COOKIE["totalrec"]))
-{
+
+// Vérifie si le cookie "totalrec" est défini
+if (isset($_COOKIE["totalrec"])) {
     $totalrec = $_COOKIE["totalrec"];
 }
+
 ?>
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title id="titre">THALES</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    </head>
-    <body>
-        <?php
-        include ("base.php");
-        $debut = $page - 1;
-        $debut = $debut * $totalrec;
-        $query = "SELECT field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic";
-        $req = $bd->prepare($query);
-        $req->bindValue(':numfic', $_GET['numfic']);
-        $req->execute();
-        $count = $req->rowCount();
-        $req->closeCursor();
-        $totalpage = ceil($count / $totalrec);
-        ?>
-        <nav class="navbar navbar-light bg-light">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="titre">THALES</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+</head>
+<body>
+    <?php
+    include("base.php");
+
+    // Calcule la valeur de début pour la pagination
+    $debut = $page - 1;
+    $debut = $debut * $totalrec;
+
+    // Effectue la requête pour récupérer les données de trame800 et trame806
+    $query = "SELECT field1,numfic,date FROM trame800 WHERE trame800.numfic=:numfic UNION SELECT field1,numfic,date FROM trame806 WHERE trame806.numfic=:numfic";
+    $req = $bd->prepare($query);
+    $req->bindValue(':numfic', $_GET['numfic']);
+    $req->execute();
+
+    // Compte le nombre de lignes retournées par la requête
+    $count = $req->rowCount();
+    $req->closeCursor();
+
+    // Calcule le nombre total de pages en fonction du nombre de lignes et du nombre d'enregistrements par page
+    $totalpage = ceil($count / $totalrec);
+    ?>
+
+    <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand">
             <img src="Thales_Alenia_Space_Logo.svg.png" width="150" height="60" class="d-inline-block align-top" alt="">
         </a>
         <a class="navbar-brand ml-auto">
             <img src="Logo-couple-IUT-horizontal-CMJN-05-07-1-1024x415.jpg" width="150" height="60" class="align-top" alt="">
         </a>
-        </nav>
-        <nav class="nav nav-pills nav-justified">
+    </nav>
+
+    <nav class="nav nav-pills nav-justified">
         <a class="nav-item nav-link unactive-link" href="index.php">Accueil</a>
         <a class="nav-item nav-link unactive-link" href="conf.php">Configuration</a>
-        </nav>
-        <button id="scrollToTopBtn" class="btn">Retourne en haut</button>
+    </nav>
 
-                <div class="col-md-12">
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <h4 class="text-center font">Affichage des trames du fichier <?php echo $_GET['numfic']; ?> sélectionné par page</h4>
+    <button id="scrollToTopBtn" class="btn">Retourne en haut</button>
+
+    <div class="col-md-12">
+        <div class="card mt-4">
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <h4 class="text-center font">Affichage des trames du fichier <?php echo $_GET['numfic']; ?> sélectionné par page</h4>
                                     <form method="GET" action="">
-                                        <select id="selec_page" name="page" class="btn btn-primary page" onchange="this.form.submit();">  
-                                            <option value="Select">Page <?php if(isset($_GET['page'])){echo $_GET['page'];} ?></option> 
+                                        <select id="selec_page" name="page" class="btn btn-primary page" onchange="this.form.submit();">
+                                            <option value="Select">Page <?php if(isset($_GET['page'])){echo $_GET['page'];} ?></option>
                                             <?php
+                                            // Génère les options pour la sélection de page
                                             if ($totalpage > 1) {
                                                 for ($i = 1; $i <= $totalpage; $i++) {
                                                     echo '<option value="'.$i.'">'.$i.'</a>';
                                                 }
                                             }
-                                            ?> 
+                                            ?>
                                             <input type="hidden" name="numfic" value="<?php echo $_GET['numfic']; ?>">
-                                        </select>   
+                                        </select>
                                     </form>
-                                    <?php 
-                                            $query = "SELECT * FROM trame800 INNER JOIN fic ON fic.numfic=trame800.numfic WHERE fic.numfic=:numfic;";
-                                            $req = $bd->prepare($query);
-                                            $req->bindValue(':numfic', $_GET['numfic']);
-                                            $req->execute();
-                                            $res800 = $req->fetchall();
-                                            $count800 = $req->rowCount();
-                                            $req->closeCursor();
-                                            $query = "SELECT * FROM trame806 INNER JOIN fic ON fic.numfic=trame806.numfic WHERE fic.numfic=:numfic;";
-                                            $req = $bd->prepare($query);
-                                            $req->bindValue(':numfic', $_GET['numfic']);
-                                            $req->execute();
-                                            $res806 = $req->fetchall();
-                                            $count806 = $req->rowCount();
-                                            $req->closeCursor();
-                                            $i = 0;
-                                            $j = 0;
-                                            $restotal = [];
+                                    <?php
+                                    // Select les données de trame800 et trame806 par rapport au numéro de fichier
+                                    $query = "SELECT * FROM trame800 INNER JOIN fic ON fic.numfic=trame800.numfic WHERE fic.numfic=:numfic;";
+                                    $req = $bd->prepare($query);
+                                    $req->bindValue(':numfic', $_GET['numfic']);
+                                    $req->execute();
+                                    $res800 = $req->fetchAll();
+                                    $count800 = $req->rowCount();
+                                    $req->closeCursor();
 
-                                            if ($count800 > 0 || $count806 > 0)
-                                            {
-                                                while ($i < $count800 && $j < $count806)
-                                                {
-                                                    $date1 = DateTime::createFromFormat('l:d:M:m:Y:H:i:s.u', $res800[$i]['date']);
-                                                    $date2 = DateTime::createFromFormat('l:d:M:m:Y:H:i:s.u', $res806[$j]['date']);
-                                                    
-                                                    if ($date1 < $date2)
-                                                    {
-                                                        array_push($restotal, $res800[$i]);
-                                                        $i++;
-                                                    }
-                                                    elseif ($date2 < $date1)
-                                                    { 
-                                                        array_push($restotal, $res806[$j]);
-                                                        $j++;
-                                                    }
-                                                }
-                                                    
-                                                while ($i < $count800)
-                                                {
-                                                    array_push($restotal, $res800[$i]);
-                                                    $i++;
-                                                }
-                                                
-                                                while ($j < $count806)
-                                                {
-                                                    array_push($restotal, $res806[$j]);
-                                                    $j++;
-                                                }
-                                                
+                                    $query = "SELECT * FROM trame806 INNER JOIN fic ON fic.numfic=trame806.numfic WHERE fic.numfic=:numfic;";
+                                    $req = $bd->prepare($query);
+                                    $req->bindValue(':numfic', $_GET['numfic']);
+                                    $req->execute();
+                                    $res806 = $req->fetchAll();
+                                    $count806 = $req->rowCount();
+                                    $req->closeCursor();
 
-                                                for ($i = $debut; $i < min($debut + $totalrec, count($restotal)); $i++)
-                                                {
-                                                    if ($restotal[$i]['field1'] == 800)
-                                                    {
-                                                        $typetrame = "trame800";
-                                                    }
+                                    $i = 0;
+                                    $j = 0;
+                                    $restotal = [];
 
-                                                    elseif ($restotal[$i]['field1'] == 806)
-                                                    {
-                                                        $typetrame = "trame806";
-                                                    }
+                                    // Fusionne ces résultats dans l'ordre chronologique
+                                    if ($count800 > 0 || $count806 > 0) {
+                                        while ($i < $count800 && $j < $count806) {
+                                            $date1 = DateTime::createFromFormat('l:d:M:m:Y:H:i:s.u', $res800[$i]['date']);
+                                            $date2 = DateTime::createFromFormat('l:d:M:m:Y:H:i:s.u', $res806[$j]['date']);
 
-                                                    if($typetrame == "trame800")
-                                                    {
+                                            if ($date1 < $date2) {
+                                                array_push($restotal, $res800[$i]);
+                                                $i++;
+                                            } elseif ($date2 < $date1) {
+                                                array_push($restotal, $res806[$j]);
+                                                $j++;
+                                            }
+                                        }
+
+                                        // Ajoute les derniers éléments s'il en reste
+                                        while ($i < $count800) {
+                                            array_push($restotal, $res800[$i]);
+                                            $i++;
+                                        }
+
+                                        // Ajoute les derniers éléments s'il en reste
+                                        while ($j < $count806) {
+                                            array_push($restotal, $res806[$j]);
+                                            $j++;
+                                        }
+
+                                        // Affiche les données d'une certaine manière en fonction du type de trame
+                                        for ($i = $debut; $i < min($debut + $totalrec, count($restotal)); $i++) {
+                                            if ($restotal[$i]['field1'] == 800) {
+                                                $typetrame = "trame800";
+                                            } elseif ($restotal[$i]['field1'] == 806) {
+                                                $typetrame = "trame806";
+                                            }
+
+                                            if ($typetrame == "trame800") {
                                                     ?>
                                                     <div class="col-md-12">
                                                     <div class="card mt-4">
@@ -374,6 +381,7 @@ if (isset($_COOKIE["totalrec"]))
                                 <select id="selec_page" name="page" class="btn btn-primary page" onchange="this.form.submit();">  
                                     <option value="Select">Page <?php if(isset($_GET['page'])){echo $_GET['page'];} ?></option> 
                                     <?php
+                                    // Génère les options pour la sélection de page
                                     if ($totalpage > 1) {
                                         for ($i = 1; $i <= $totalpage; $i++) {
                                             echo '<option value="'.$i.'">'.$i.'</a>';
@@ -393,27 +401,30 @@ if (isset($_COOKIE["totalrec"]))
     </body>
 </html>
 <script>
-// montre le bouton quand la page descend
+// Montre le bouton quand la page est descendue
 window.onscroll = function() {
   showScrollButton();
 };
 
 function showScrollButton() {
   var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+  // Vérifie si la position de défilement de la page dépasse 20 pixels du haut
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    scrollToTopBtn.style.display = "block";
+    scrollToTopBtn.style.display = "block"; // Affiche le bouton de défilement en haut
   } else {
-    scrollToTopBtn.style.display = "none";
+    scrollToTopBtn.style.display = "none"; // Masque le bouton de défilement en haut
   }
 }
 
-// scroll en haut de la page quand le bouton est cliqué
+// Fait défiler la page en haut quand le bouton est cliqué
 document.getElementById("scrollToTopBtn").onclick = function() {
   scrollToTop();
 };
 
 function scrollToTop() {
+  // Fait défiler le corps de la page en haut
   document.body.scrollTop = 0;
+  // Fait défiler la partie visible de la page en haut
   document.documentElement.scrollTop = 0;
 }
 </script>
