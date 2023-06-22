@@ -1,6 +1,6 @@
 <?php
 include ('base.php');
-$query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,obsw,bds,tv,dt) ORDER BY numfic DESC LIMIT 0,5 ";
+$query = "SELECT * FROM fic WHERE CONCAT(numfic,nomfic,dt) ORDER BY numfic DESC LIMIT 0,5 ";
 $req = $bd->prepare($query);
 $req->execute();
 $res = $req->fetchall();
